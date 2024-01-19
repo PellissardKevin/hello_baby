@@ -1,0 +1,170 @@
+<Home_user>:
+
+	BoxLayout:
+		orientation: 'vertical'
+		spacing: '5dp'
+		canvas:
+			Color:
+				rgba: 0.6, 0.8, 1, 1
+			Rectangle:
+				pos: self.pos
+				size: self.size
+
+		Button:
+			size_hint: None, None
+			size: dp(24), dp(24)
+			pos_hint: {'top': 1.0, 'left': 1.0}
+			background_normal: "fleche_retour.png"
+			on_press: root.goBack()
+
+		BoxLayout:
+			orientation: 'horizontal'
+			spacing: '5dp'
+			size: dp(40), dp(40)
+			pos_hint: {'top': 1.0}
+			size_hint_y: None
+			height: dp(25)
+
+			Image:
+				source: "hello_baby_logo_band.png"
+				allow_stretch: False
+				keep_ratio: False
+				size: dp(32), dp(32)
+
+			Label:
+				text: 'Hello Baby !'
+				color: 0, 0, 0, 1
+				font_size: 30
+				padding: ('5dp', '5dp')
+				background_color: 0.6, 0.8, 1, 1
+
+			Image:
+				source: "photo_profil.png"
+				allow_stretch: False
+				keep_ratio: False
+				size: dp(32), dp(32)
+
+		Carousel:
+			marging: 20
+			padding: 50
+			direction: 'right'
+			AsyncImage:
+				source: 'http://placehold.it/480x270.png&text=slide-1.png'
+			AsyncImage:
+				source: 'http://placehold.it/480x270.png&text=slide-2.png'
+			AsyncImage:
+				source: 'http://placehold.it/480x270.png&text=slide-3.png'
+			AsyncImage:
+				source: 'http://placehold.it/480x270.png&text=slide-4.png'
+
+		BoxLayout:
+			orientation: 'vertical'
+			spacing: 10
+			padding: 50
+
+			Button:
+				text: 'Bébé est là !'
+				color: 0, 0, 0, 1
+				size_hint: 1.0, 0.2
+				size_hint_y: None
+				height: 80
+				size: '50dp', '50dp'
+				margin: 20
+				background_color: 0, 0, 0, 0
+				canvas.before:
+					Color:
+						rgba: 0, 128, 192, 0.5
+					RoundedRectangle:
+						pos: self.pos
+						size: self.size
+						radius: [15, 15, 15, 15]
+				on_press: root.baby_home()
+
+			Button:
+				text: 'Diagrammes'
+				color: 0, 0, 0, 1
+				size_hint: 1.0, 0.2
+				size_hint_y: None
+				height: 80
+				size: '50dp', '50dp'
+				margin: 20
+				background_color: 0, 0, 0, 0
+				canvas.before:
+					Color:
+						rgba: 128 / 255, 255 / 255, 128 / 255, 1
+					RoundedRectangle:
+						pos: self.pos
+						size: self.size
+						radius: [15, 15, 15, 15]
+				on_press: root.diagrams()
+
+			Button:
+				text: 'Rendez-vous'
+				color: 0, 0, 0, 1
+				size_hint: 1.0, 0.2
+				size_hint_y: None
+				height: 80
+				size: '50dp', '50dp'
+				margin: 20
+				background_color: 0, 0, 0, 0
+				canvas.before:
+					Color:
+						rgba: 255 / 255, 128 / 255, 128 / 255, 1
+					RoundedRectangle:
+						pos: self.pos
+						size: self.size
+						radius: [15, 15, 15, 15]
+				on_press: root.appointement()
+
+			Button:
+				text: 'Professionnels'
+				color: 0, 0, 0, 1
+				size_hint: 1.0, 0.2
+				size_hint_y: None
+				height: 80
+				size: '50dp', '50dp'
+				margin: 20
+				background_color: 0, 0, 0, 0
+				canvas.before:
+					Color:
+						rgba: 255 / 255, 143 / 255, 89 / 255, 1
+					RoundedRectangle:
+						pos: self.pos
+						size: self.size
+						radius: [15, 15, 15, 15]
+				on_press: root.professionnals()
+
+			Button:
+				text: 'Forums'
+				color: 0, 0, 0, 1
+				size_hint: 1.0, 0.2
+				size_hint_y: None
+				height: 80
+				size: '50dp', '50dp'
+				margin: 20
+				background_color: 0, 0, 0, 0
+				canvas.before:
+					Color:
+						rgba: 183 / 255, 111 / 255, 255 / 255, 1
+					RoundedRectangle:
+						pos: self.pos
+						size: self.size
+						radius: [15, 15, 15, 15]
+				on_press: root.forums()
+
+		BoxLayout:
+			orientation: 'vertical'
+			size_hint_y: None
+			height: dp(50)
+			canvas:
+				Color:
+					rgba: 0.25, 0.5, 0.5, 1
+				Rectangle:
+					pos: self.pos
+					size: self.size
+
+			Label:
+				text: 'Contact'
+				color: 1, 1, 1, 1
+				font_size: 20
+				height: dp(25)
