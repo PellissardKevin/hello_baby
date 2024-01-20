@@ -1,4 +1,4 @@
-<Home_user>:
+<Home_baby>:
 
 	BoxLayout:
 		orientation: 'vertical'
@@ -61,24 +61,6 @@
 			orientation: 'vertical'
 			spacing: 10
 			padding: 50
-
-			Button:
-				text: 'Bébé est là !'
-				color: 0, 0, 0, 1
-				size_hint: 1.0, 0.2
-				size_hint_y: None
-				height: 80
-				size: '50dp', '50dp'
-				margin: 20
-				background_color: 0, 0, 0, 0
-				canvas.before:
-					Color:
-						rgba: 0, 128, 192, 0.5
-					RoundedRectangle:
-						pos: self.pos
-						size: self.size
-						radius: [15, 15, 15, 15]
-				on_press: root.baby_home()
 
 			Button:
 				text: 'Diagrammes'

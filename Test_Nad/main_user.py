@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import kivy
 from kivy.core.window import Window
 from kivy.app import App
@@ -24,9 +26,14 @@ class User(BoxLayout):
         self.email = email
         self.mot_de_passe = mot_de_passe
 
+    def create():
+        pass
+
+
 class userfile(App):
     def build(self):
         return User()
+
 
 if __name__ == '__main__':
     userfile().run()
