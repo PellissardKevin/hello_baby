@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import kivy
 from kivy.core.window import Window
 from kivy.app import App
@@ -11,25 +13,21 @@ Window.size = (430, 932)
 kivy.require('2.0.0')
 
 
-class Home_user(BoxLayout):
+class Baby(BoxLayout):
     def __init__(self, nom='', prénom='', date_de_naissance='%d-%m-%Y',
-                 poids=0, début_de_grossesse='%d-%m-%Y', couple=False,
-                 email='', mot_de_passe=''):
-        super(Home_user, self).__init__()
+                 poids=0, taille=0):
+        super(Baby, self).__init__()
         self.nom = nom
         self.prénom = prénom
         self.date_de_naissance = date_de_naissance
         self.poids = poids
-        self.début_de_grossesse = début_de_grossesse
-        self.couple = couple
-        self.email = email
-        self.mot_de_passe = mot_de_passe
+        self.taille = taille
 
 
-class userhome(App):
+class babyfile(App):
     def build(self):
-        return Home_user()
+        return Baby()
 
 
 if __name__ == '__main__':
-    userhome().run()
+    babyfile().run()
