@@ -69,12 +69,13 @@
 			spacing: 10
 			padding: 50
 
-			Label:
+			Button:
 				text:'Echanges'
 				color: 0 , 0 , 0 , 1
 				size_hint_y: None
 				height: 50
 				margin: 20
+				background_color: 0, 0, 0, 0
 				canvas.before:
 					Color:
 						rgba: 242 / 255, 242 / 255, 0 / 255, 1
@@ -82,6 +83,7 @@
 						pos: self.pos
 						size: self.size
 						radius: [15, 15, 15, 15]
+				on_press: root.exchange()
 
 		BoxLayout:
 			orientation: 'vertical'
