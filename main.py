@@ -1,34 +1,27 @@
 #!/usr/bin/env python3
 
-import kivy
-from kivy.app import App
+from kivy.app import App, runTouchApp
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 
-import random
 
-kivy.require('2.0.0')
+class Login(Screen):
+    pass
 
-class GameView(BoxLayout):
-    def __init__(self):
-        super(GameView, self).__init__()
-        self.randomValue = random.randint(0, 1000)
+class Register(Screen):
+    pass
 
-    def check_number(self):
-        if int(self.anwer_input.text) == self.randomValue:
-            self.result_label.text = "Congrat !"
-            self.result_label.color = "#00EF0B"
-            self.randomValue = random.randint(0, 1000)
-        elif int(self.anwer_input.text) > self.randomValue:
-            self.result_label.text = "Less !"
-            self.result_label.color = "#EF3E00"
-        elif int(self.anwer_input.text) < self.randomValue:
-            self.result_label.text = "More !"
-            self.result_label.color = "#EF3E00"
-
-class TestApp(App):
+class Main(App):
     def build(self):
-        return GameView()
+        sm = ScreenManager(transition=SlideTransition())
+        sm.add_widget(Login(name='login'))
+        sm.add_widget(Register(name='register'))
+
+        return sm
+
 
 if __name__ == '__main__':
-    app = TestApp()
-    app.run()
+    Window.size=(430,930)
+    Main().run()
