@@ -1,14 +1,16 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
 <Diagrams>:
 
 	BoxLayout:
 		orientation: 'vertical'
 		spacing: '5dp'
 		canvas:
-			Color:
-				rgba: 0.6, 0.8, 1, 1
 			Rectangle:
 				pos: self.pos
 				size: self.size
+				texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
 
 		Button:
 			size_hint: None, None
@@ -57,12 +59,11 @@
 				height: 50
 				margin: 20
 				canvas.before:
-					Color:
-						rgba: 128 / 255, 255 / 255, 128 / 255, 1
 					RoundedRectangle:
 						pos: self.pos
 						size: self.size
 						radius: [15, 15, 15, 15]
+						texture: Gradient.vertical(get_color_from_hex("80FF80"), get_color_from_hex("C6FFC6"))
 
 		BoxLayout:
 			orientation: 'vertical'

@@ -1,14 +1,16 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
 <Home_baby>:
 
 	BoxLayout:
 		orientation: 'vertical'
 		spacing: '5dp'
 		canvas:
-			Color:
-				rgba: 0.6, 0.8, 1, 1
 			Rectangle:
 				pos: self.pos
 				size: self.size
+				texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
 
 		Button:
 			size_hint: None, None
@@ -72,11 +74,10 @@
 				margin: 20
 				background_color: 0, 0, 0, 0
 				canvas.before:
-					Color:
-						rgba: 128 / 255, 255 / 255, 128 / 255, 1
 					RoundedRectangle:
 						pos: self.pos
 						size: self.size
+						texture: Gradient.vertical(get_color_from_hex("80FF80"), get_color_from_hex("C6FFC6"))
 						radius: [15, 15, 15, 15]
 				on_press: root.diagrams()
 
@@ -90,11 +91,10 @@
 				margin: 20
 				background_color: 0, 0, 0, 0
 				canvas.before:
-					Color:
-						rgba: 255 / 255, 128 / 255, 128 / 255, 1
 					RoundedRectangle:
 						pos: self.pos
 						size: self.size
+						texture: Gradient.vertical(get_color_from_hex("FF8080"), get_color_from_hex("FFBFBF"))
 						radius: [15, 15, 15, 15]
 				on_press: root.appointement()
 
@@ -108,11 +108,10 @@
 				margin: 20
 				background_color: 0, 0, 0, 0
 				canvas.before:
-					Color:
-						rgba: 255 / 255, 143 / 255, 89 / 255, 1
 					RoundedRectangle:
 						pos: self.pos
 						size: self.size
+						texture: Gradient.vertical(get_color_from_hex("FF8F59"), get_color_from_hex("FFB997"))
 						radius: [15, 15, 15, 15]
 				on_press: root.professionnals()
 
@@ -126,11 +125,10 @@
 				margin: 20
 				background_color: 0, 0, 0, 0
 				canvas.before:
-					Color:
-						rgba: 183 / 255, 111 / 255, 255 / 255, 1
 					RoundedRectangle:
 						pos: self.pos
 						size: self.size
+						texture: Gradient.vertical(get_color_from_hex("B76FFF"), get_color_from_hex("DCB9FF"))
 						radius: [15, 15, 15, 15]
 				on_press: root.forums()
 

@@ -1,14 +1,16 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
 <RegisterLabel@ButtonBehavior+Label>:
 <Account>:
-    BoxLayout:
+	BoxLayout:
 		orientation: 'vertical'
 		spacing: '5dp'
 		canvas:
-			Color:
-				rgba: 0.6, 0.8, 1, 1
 			Rectangle:
 				pos: self.pos
 				size: self.size
+				texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
 
 		BoxLayout:
 			orientation: 'horizontal'
@@ -16,9 +18,9 @@
 			pos_hint: {'top': 1.0}
 
 			Image:
-                source: "hello_baby_logo.png"
-                allow_stretch: False
-                keep_ratio: True
+				source: "hello_baby_logo.png"
+				allow_stretch: False
+				keep_ratio: True
 
 		BoxLayout:
 			orientation:'vertical'
