@@ -58,7 +58,7 @@ sudo mysql_secure_installation
 
 ### EXAMPLES
 
-![User Home](https://i.ibb.co/pjT1L0N/Capture-userhome.png)
+![User Home](https://i.ibb.co/C6pBDZN/Capture-userhome.png)
 
 ### AUTHORS
 
