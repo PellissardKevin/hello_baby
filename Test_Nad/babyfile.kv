@@ -11,6 +11,7 @@
 	BoxLayout:
 		orientation: 'vertical'
 		spacing: '5dp'
+		padding: '5dp'
 
 		canvas:
 			Rectangle:
@@ -44,7 +45,7 @@
 				size_hint_y: 0.5
 
 			Label:
-				text: 'Création de compte bébé'
+				text: 'Création du Profil bébé'
 				color: 0, 0, 0, 1
 				font_size: 12
 				size_hint: 1.0, 0.2
@@ -53,6 +54,8 @@
 		GridLayout:
 			cols: 2
 			spacing: '5dp'
+			padding: '30dp'
+
 			Label:
 				text: 'Prénom :*'
 				color: 0, 0, 0, 1
@@ -106,19 +109,19 @@
 			padding: ('10dp', '10dp')
 
 		Button:
-			text: 'Ajouter un nouveau Bébé'
-			color: 1, 1, 1, 1
-			size_hint: None, None
-			size: 200, 50
-			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-			background_color: 'blue'
-			on_press: root.create_new_baby()
-
-		Button:
-			text: 'Créer'
+			text: 'Valider le profil'
 			color: 1, 1, 1, 1
 			size_hint: None, None
 			size: 200, 50
 			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 			background_color: 'blue'
 			on_press: root.create()
+
+		Button:
+			text: 'Ajouter un nouveau profil'
+			color: 1, 1, 1, 1
+			size_hint: None, None
+			size: 200, 50
+			pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+			background_color: 'blue'
+			on_press: root.create_new_baby()

@@ -1,0 +1,69 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
+<RegisterLabel@ButtonBehavior+Label>:
+<Contact>:
+
+
+	BoxLayout:
+		orientation: 'vertical'
+		spacing: '5dp'
+		canvas:
+			Rectangle:
+				pos: self.pos
+				size: self.size
+				texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
+
+		Button:
+			size_hint: None, None
+			size: dp(24), dp(24)
+			pos_hint: {'top': 1.0, 'left': 1.0}
+			background_normal: "fleche_retour.png"
+			on_press: root.goBack()
+
+		BoxLayout:
+			orientation: 'horizontal'
+			spacing: '5dp'
+			pos_hint: {'top': 1.0}
+
+			Image:
+				source: "hello_baby_logo.png"
+				allow_stretch: False
+				keep_ratio: True
+
+		BoxLayout:
+			orientation:'vertical'
+			spacing: '20dp'
+			pos_hint: {'top': 1.0}
+			padding: ('20dp', '20dp')
+
+			Label:
+				text:'Contact'
+				color: 0 , 0 , 0 , 1
+				font_size: 20
+				padding: ('5dp', '25dp')
+
+			TextInput:
+				multiline:False
+				hint_text:"Objet"
+				size_hint: None,None
+				size_hint_x: 1
+				height: 30
+				font_size: 12
+				pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+			TextInput:
+				multiline:False
+				size_hint: None,None
+				size_hint_x: 1
+				height: 300
+				hint_text:"Description"
+				font_size: 12
+
+			Button:
+				size_hint: None,None
+				size_hint_x: 1
+				height: 40
+				text:'Envoyer'
+				font_size: 14
+				on_press: root.send()

@@ -49,7 +49,7 @@
 		BoxLayout:
 			orientation: 'vertical'
 			spacing: 10
-			padding: ('50dp', '350dp')
+			padding: ('50dp', '750dp')
 			pos_hint: {'top': 1.0}
 
 			Label:
@@ -64,26 +64,6 @@
 						size: self.size
 						texture: Gradient.vertical(get_color_from_hex("B76FFF"), get_color_from_hex("DCB9FF"))
 						radius: [15, 15, 15, 15]
-
-		BoxLayout:
-			orientation: 'vertical'
-			spacing: 10
-			padding: 50
-
-			Button:
-				text:'Echanges'
-				color: 0 , 0 , 0 , 1
-				size_hint_y: None
-				height: 50
-				margin: 20
-				background_color: 0, 0, 0, 0
-				canvas.before:
-					RoundedRectangle:
-						pos: self.pos
-						size: self.size
-						texture: Gradient.vertical(get_color_from_hex("F2F200"), get_color_from_hex("FFFF80"))
-						radius: [15, 15, 15, 15]
-				on_press: root.exchange()
 
 		BoxLayout:
 			orientation: 'vertical'
