@@ -31,7 +31,7 @@ Python 3 :
 sudo apt update
 sudo apt install python3
 
-![Logo](https://i.ibb.co/6nXKR6H/django-original-logo-icon-146559.png)
+![Logo](https://i.ibb.co/P1Lq8bH/django-original-logo-icon-146559.png)
 
 Django :
 
@@ -39,7 +39,7 @@ sudo apt update
 sudo apt install pip3
 pip3 install django
 
-![Logo](https://i.ibb.co/m94N6zF/drf-logo2.png)
+![Logo](https://i.ibb.co/yVFDmqW/drf-logo2.png)
 
 Django rest-framwork:
 
