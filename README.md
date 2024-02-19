@@ -1,4 +1,5 @@
 # <p style="text-align: center;"><span style="color:blue">*Hello Baby !*</span></p>
+
 ![Logo](https://i.ibb.co/jfgNjsm/hello-baby-logo.png)
 
 - [DESCRIPTION](#description)
@@ -24,12 +25,14 @@ Kivy is a framework, useful for creating cross-platform touch applications with 
 <span style="color:black">
 
 ![Logo](https://i.ibb.co/b52K6WH/python-logo.jpg)
+
 Python 3 :
 
 sudo apt update
 sudo apt install python3
 
 ![Logo](https://i.ibb.co/6nXKR6H/django-original-logo-icon-146559.png)
+
 Django :
 
 sudo apt update
@@ -37,16 +40,19 @@ sudo apt install pip3
 pip3 install django
 
 ![Logo](https://i.ibb.co/m94N6zF/drf-logo2.png)
+
 Django rest-framwork:
 
 pip install djangorestframework
 
 ![Logo](https://i.ibb.co/MCq6m42/logo-kivy.png)
+
 Kivy :
 
 pip install kivy
 
 ![Logo](https://i.ibb.co/dfFRyKL/Mysql-logo.png)
+
 MySQL :
 
 sudo apt install mysql-server
