@@ -5,7 +5,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.lang import Builder
+from kivy.graphics.texture import Texture
 
+Builder.load_file('templates/register.kv')
+Builder.load_file('templates/login.kv')
 
 class Login(Screen):
     pass
