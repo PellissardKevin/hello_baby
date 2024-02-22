@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from .models import user, baby, forum, message, pregnancie, biberon
-from .serializers import UserSerializer, BabySerializer
+from .serializers import UserSerializer, BabySerializer, ForumSerializer, MessageSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status, generics
@@ -88,3 +88,79 @@ class BabyUser(generics.ListAPIView):
             id_user=self.kwargs['id_user']
         )
 
+@api_view(['GET', 'POST'])
+def forum_list(request):
+    if request.method == 'GET':
+        forums = forum.objects.all()
+        serializer = ForumSerializer(forums, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = ForumSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def forum_details(request, id):
+    try:
+        forum_id = forum.objects.get(pk=id)
+    except forum.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ForumSerializer(forum_id)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = ForumSerializer(forum_id, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        forum_id.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ForumUser(generics.ListAPIView):
+    queryset = forum.objects.all()
+    serializer_class = ForumSerializer
+
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            id_user=self.kwargs['id_user']
+        )
+
+@api_view(['GET', 'POST'])
+def forum_message_list(request):
+    if request.method == 'GET':
+        messages = message.objects.all()
+        serializer = MessageSerializer(messages, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = MessageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def forum_message_details(request, id):
+    try:
+        message_id = message.objects.get(pk=id)
+    except message.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = MessageSerializer(message_id)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = MessageSerializer(message_id, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        message_id.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -26,4 +26,9 @@ urlpatterns = [
     path('user/<int:id>', views.user_details),
     path('user/baby/<int:id_user>', views.BabyUser.as_view()),
     path('baby/<int:id>', views.baby_details),
+    path('forums/', views.forum_list),
+    path('forums/<int:id}', views.forum_details),
+    path('forums/<int:id_user>', views.ForumUser.as_view()),
+    path('forums/<int:forum_id>/messages/', views.forum_message_list),
+    path('forums/<int:forum_id>/messages/<int:message_id>', views.forum_message_details),
 ]
