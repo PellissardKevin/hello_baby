@@ -1,8 +1,9 @@
+#:kivy 2.0.0
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
 
 <RegisterLabel@ButtonBehavior+Label>:
-<Account>:
+<Login>:
 	BoxLayout:
 		orientation: 'vertical'
 		spacing: '5dp'
@@ -35,6 +36,7 @@
 				padding: ('5dp', '25dp')
 
 			TextInput:
+				id: email
 				multiline:False
 				hint_text:"E-mail"
 				size_hint: None,None
@@ -44,6 +46,7 @@
 				pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
 			TextInput:
+				id: password
 				multiline:False
 				size_hint: None,None
 				size_hint_x: 1
@@ -58,6 +61,7 @@
 				height: 40
 				text:'Log In'
 				font_size: 14
+				on_press: root.authenticate(root.ids.email.text, root.ids.password.text)
 
 		BoxLayout:
 			orientation:'horizontal'

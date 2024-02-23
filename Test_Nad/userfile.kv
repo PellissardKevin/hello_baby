@@ -1,15 +1,15 @@
+#:kivy 2.0.0
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
 
-<User>:
-    answer_input1: answer_input1
-    answer_input2: answer_input2
-    answer_input3: answer_input3
-    answer_input4: answer_input4
-    answer_input5: answer_input5
-    answer_input6: answer_input6
-    answer_input7: answer_input7
-    answer_input8: answer_input8
+<Register>:
+    answer_input1: firstname
+    answer_input2: lastname
+    answer_input3: birthday
+    answer_input5: email
+    answer_input6: password
+    answer_input7: weight
+    answer_input8: couple
 
     BoxLayout:
         orientation: 'vertical'
@@ -27,7 +27,7 @@
             size: dp(24), dp(24)
             pos_hint: {'top': 1.0, 'left': 1.0}
             background_normal: "fleche_retour.png"
-            on_press: root.goBack()
+            on_press: root.manager.current = "login"
 
         BoxLayout:
             orientation: 'vertical'
@@ -63,7 +63,7 @@
                 text: 'Prénom :*'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input1
+                id: firstname
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -72,7 +72,7 @@
                 text: 'Nom :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input2
+                id: lastname
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -81,16 +81,7 @@
                 text: 'Date de naissance :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input3
-                padding: 5
-                font_size: 12
-                input_type: "text"
-
-            Label:
-                text: 'Date du début de grossesse :'
-                color: 0, 0, 0, 1
-            TextInput:
-                id: answer_input4
+                id: birthday
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -99,7 +90,7 @@
                 text: 'Email :*'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input5
+                id: email
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -108,7 +99,7 @@
                 text: 'Mot de passe :*'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input6
+                id: password
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -117,7 +108,7 @@
                 text: 'Poids actuel :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input7
+                id: weight
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -126,7 +117,7 @@
                 text: 'En couple :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input8
+                id: couple
                 padding: 5
                 font_size: 12
                 input_type: "text"
@@ -145,4 +136,4 @@
             size: 150, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             background_color: 'blue'
-            on_press: root.create()
+            on_press: root.create(root.ids.firstname.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.email.text, root.ids.password.text, root.ids.weight.text, root.ids.couple.text)

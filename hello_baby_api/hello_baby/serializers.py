@@ -9,7 +9,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = user
-        fields = '__all__'
+        fields = [
+            "id_user",
+            "firstname",
+            "lastname",
+            "email",
+            "password",
+            "birthday",
+            "couple",
+            "weight"
+        ]
 
 
 class BabySerializer(serializers.ModelSerializer):

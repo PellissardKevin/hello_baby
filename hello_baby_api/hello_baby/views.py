@@ -4,6 +4,7 @@ from .serializers import UserSerializer, BabySerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status, generics
+from django.contrib.auth.models import User
 
 @api_view(['GET', 'POST'])
 def user_list(request):
@@ -15,6 +16,7 @@ def user_list(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
+            User.objects.create(username=request.data['email'], email=request.data['email'], password=request.data['password'])
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -87,4 +89,3 @@ class BabyUser(generics.ListAPIView):
         return super().get_queryset().filter(
             id_user=self.kwargs['id_user']
         )
-
