@@ -38,9 +38,9 @@ class Register(Screen):
         }
         response = requests.post(url, data=data)
         if response.status_code == 200:
-            print("Authentification réussie!")
+            print("Enregistrement réussie!")
         else:
-            print("Authentification échouée!")
+            print("Enregistrement échouée!")
 
 
 class Main(App):
