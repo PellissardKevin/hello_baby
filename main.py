@@ -37,7 +37,7 @@ class Register(Screen):
             "weight": weight,
         }
         response = requests.post(url, data=data)
-        if response.status_code == 200:
+        if response.status_code == 201:
             print("Enregistrement réussie!")
         else:
             print("Enregistrement échouée!")
