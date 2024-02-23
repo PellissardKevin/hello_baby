@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'medium.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hello_baby',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3307',
+        'NAME': 'hellobaby_sql',
+        'USER': 'hellobaby',
+        'PASSWORD': '?YULw=nzA;U5SZ~',
+        'HOST': 'mysql-hellobaby.alwaysdata.net',
+        'PORT': '3306',
     }
 }
 
