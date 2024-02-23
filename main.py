@@ -18,8 +18,7 @@ class Login(Screen):
         url = 'http://127.0.0.1:8000/api-auth/login/'
         data = {'username': email, 'password': password}
         response = requests.post(url, data=data)
-        print(data)
-        if response.status_code == 200:
+        if response.status_code == 201:
             print("Authentification réussie!")
         else:
             print("Authentification échouée!")

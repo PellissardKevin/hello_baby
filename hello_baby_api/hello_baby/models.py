@@ -1,4 +1,5 @@
 from django.db import models
+from versatileimagefield.fields import VersatileImageField, PPOIField
 
 class user(models.Model):
     id_user = models.AutoField(primary_key=True)
@@ -53,3 +54,15 @@ class pregnancie(models.Model):
     pregnancy_date = models.DateField(null=True, blank=True)
     amenorhea_date = models.DateField(null=True, blank=True)
     id_user = models.ForeignKey(user, on_delete=models.CASCADE)
+
+class Image(models.Model):
+    name = models.CharField(max_length=255)
+    image = VersatileImageField(
+        'Image',
+        upload_to='images/',
+        ppoi_field='image_ppoi'
+    )
+    image_ppoi = PPOIField()
+
+    def __str__(self):
+        return self.name
