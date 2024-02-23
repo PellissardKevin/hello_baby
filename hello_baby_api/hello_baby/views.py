@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from .models import user, baby, forum, message, pregnancie, biberon
-from .serializers import UserSerializer, BabySerializer
+from .serializers import UserSerializer, BabySerializer, ForumSerializer, MessageSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status, generics
@@ -89,3 +89,4 @@ class BabyUser(generics.ListAPIView):
         return super().get_queryset().filter(
             id_user=self.kwargs['id_user']
         )
+

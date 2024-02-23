@@ -6,19 +6,22 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 
+
 Window.size = (430, 932)
+
 
 kivy.require('2.0.0')
 
 
-class Account(BoxLayout):
-    pass
+class Professionnal(BoxLayout):
+    def __init__(self):
+        super(Professionnal, self).__init__()
 
 
-class accountfile(App):
+class professionnalfile(App):
     def build(self):
-        return Login()
+        return Professionnal()
 
 
 if __name__ == '__main__':
-    accountfile().run()
+    professionnalfile().run()

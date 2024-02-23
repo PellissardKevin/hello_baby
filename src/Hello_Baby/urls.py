@@ -1,8 +1,8 @@
 """
-URL configuration for hello_api project.
+URL configuration for Hello_Baby project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,17 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from hello_baby import views
-from django.contrib.auth.views import LoginView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.urls import path
+from Hello_Baby import views
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('login/', LoginView.as_view()),
-    path('user/', views.user_list, name='user_list'),
-    path('user/<int:id>', views.user_details),
-    path('user/baby/<int:id_user>', views.BabyUser.as_view()),
-    path('baby/<int:id>', views.baby_details),
+    path('api/connect/', views.account_list, name='Account'),
+    path('api/user/{user_id}/', views.user_list, name='User'),
+
 ]

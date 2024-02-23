@@ -8,6 +8,7 @@ from kivy.uix.gridlayout import GridLayout
 
 Window.size = (430, 932)
 
+
 kivy.require('2.0.0')
 
 
@@ -17,7 +18,7 @@ class Account(BoxLayout):
 
 class accountfile(App):
     def build(self):
-        return Login()
+        return Account()
 
 
 if __name__ == '__main__':
