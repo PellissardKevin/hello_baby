@@ -2,7 +2,7 @@
 # Edit at https://www.gitignore.io/?templates=pycharm,python,django
 
 educate/settings.py
-hello_baby_api/
+old_version_back/
 
 ### Django.Python Stack ###
 # Byte-compiled / optimized / DLL files
