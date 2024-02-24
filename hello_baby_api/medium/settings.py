@@ -1,4 +1,5 @@
 import os
+from config import db_pwd, db_host, db_name, db_user
 from datetime import timedelta
 
 """
@@ -87,10 +88,10 @@ WSGI_APPLICATION = 'medium.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hellobaby_sql',
-        'USER': 'hellobaby',
-        'PASSWORD': '?YULw=nzA;U5SZ~',
-        'HOST': 'mysql-hellobaby.alwaysdata.net',
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_pwd,
+        'HOST': db_host,
         'PORT': '3306',
     }
 }

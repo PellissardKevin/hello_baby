@@ -3,6 +3,7 @@
 
 educate/settings.py
 old_version_back/
+config.py
 
 ### Django.Python Stack ###
 # Byte-compiled / optimized / DLL files
