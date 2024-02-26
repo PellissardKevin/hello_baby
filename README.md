@@ -24,40 +24,11 @@ Kivy is a framework, useful for creating cross-platform touch applications with 
 ###### <p style="color:black">INSTALLATION IN UBUNTU</p>
 <span style="color:black">
 
-![Logo](https://i.ibb.co/b52K6WH/python-logo.jpg)
+![Logo](https://i.ibb.co/gVHzqWj/python-logo.jpg) ![Logo](https://i.ibb.co/SV7DT7L/django-original-logo-icon-146559.png) ![Logo](https://i.ibb.co/HPkhR5m/drf-logo2.png) ![Logo](https://i.ibb.co/VM6SDC8/logo-kivy.png) ![Logo](https://i.ibb.co/zrF87sh/Mysql-logo.png)
 
-Python 3 :
+If you want to install all the dependencies you need :
 
-sudo apt update
-sudo apt install python3
-
-![Logo](https://i.ibb.co/P1Lq8bH/django-original-logo-icon-146559.png)
-
-Django :
-
-sudo apt update
-sudo apt install pip3
-pip3 install django
-
-![Logo](https://i.ibb.co/yVFDmqW/drf-logo2.png)
-
-Django rest-framwork:
-
-pip install djangorestframework
-
-![Logo](https://i.ibb.co/MCq6m42/logo-kivy.png)
-
-Kivy :
-
-pip install kivy
-
-![Logo](https://i.ibb.co/dfFRyKL/Mysql-logo.png)
-
-MySQL :
-
-sudo apt install mysql-server
-sudo mysql_secure_installation
-
+	pip install -r requirements.txt
 
 </span>
 
