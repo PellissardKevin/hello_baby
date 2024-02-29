@@ -36,14 +36,15 @@ class BabySerializer(FlexFieldsModelSerializer):
         model = baby
         fields = [
             "id_baby",
+            "id_user",
             "firstname",
             "lastname",
             "birthday",
             "size",
-            "weight",
+            "weight"
         ]
         expandable_fields = {
-            'id_user': ('reviews.UserSerializer', {'many': False}),
+            'id_user': ('reviews.UserSerializer'),
         }
 
 class BiberonSerializer(FlexFieldsModelSerializer):
@@ -55,7 +56,7 @@ class BiberonSerializer(FlexFieldsModelSerializer):
             "nb_biberon",
         ]
         expandable_fields = {
-            'id_baby': ('reviews.BabySerializer', {'many': False}),
+            'id_baby': ('reviews.BabySerializer'),
         }
 
 class ForumSerializer(FlexFieldsModelSerializer):
@@ -65,7 +66,7 @@ class ForumSerializer(FlexFieldsModelSerializer):
             "id_forums",
         ]
         expandable_fields = {
-            'id_user': ('reviews.UserSerializer', {'many': False}),
+            'id_user': ('reviews.UserSerializer'),
         }
 
 class MessageSerializer(FlexFieldsModelSerializer):
@@ -78,8 +79,8 @@ class MessageSerializer(FlexFieldsModelSerializer):
             "id_user",
         ]
         expandable_fields = {
-            'id_user': ('reviews.UserSerializer', {'many': False}),
-            'id_forum': ('reviews.ForumsSerializer', {'many': True}),
+            'id_user': ('reviews.UserSerializer'),
+            'id_forum': ('reviews.ForumsSerializer'),
         }
 
 class PregnancieSerializer(FlexFieldsModelSerializer):
@@ -91,7 +92,7 @@ class PregnancieSerializer(FlexFieldsModelSerializer):
             "amenorhea_date",
         ]
         expandable_fields = {
-            'id_user': ('reviews.UserSerializer', {'many': False})
+            'id_user': ('reviews.UserSerializer')
         }
 
 class ImageSerializer(FlexFieldsModelSerializer):

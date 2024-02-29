@@ -87,6 +87,16 @@
                 input_type: "text"
 
             Label:
+                text: 'Date de grossesse(YYYY-MM-DD):'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: pregnancie_date
+                padding: 5
+                font_size: 12
+                multiline: False
+                on_focus: root.setDate()
+
+            Label:
                 text: 'Email :*'
                 color: 0, 0, 0, 1
             TextInput:
@@ -114,13 +124,24 @@
                 input_type: "text"
 
             Label:
+                id: couple
                 text: 'En couple :'
                 color: 0, 0, 0, 1
-            TextInput:
-                id: couple
-                padding: 5
-                font_size: 12
-                input_type: "text"
+            CheckBox:
+                id: rbutton1
+                group: 'radio button'
+                state: root.savedstate()[0]
+            CheckBox:
+                id: rbutton2
+                group: 'radio button'
+                state: root.savedstate()[1]
+            Label:
+                id: label1
+                text: root.slabel1
+            Label:
+                id: label2
+                text: root.slabel2
+
 
         Label:
             text: '*obligatoire'
@@ -138,4 +159,5 @@
             background_color: 'blue'
             on_press:
                 root.create(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.couple.text, root.ids.weight.text)
+                root.createPregnancie(root.ids.email.text, root.ids.pregnancie_date.text)
                 root.manager.current = "login"

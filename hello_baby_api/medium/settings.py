@@ -1,5 +1,5 @@
 import os
-from config import db_pwd, db_host, db_name, db_user
+from config import db_pwd, db_host, db_name, db_user, secret_key_django
 from datetime import timedelta
 
 """
@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dx1trzsp9r@0rry=!3qvtkecy65@7bjx1q)7!6$pe#*=6r3wcv'
+SECRET_KEY = secret_key_django
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
