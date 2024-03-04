@@ -48,10 +48,13 @@ class BabySerializer(FlexFieldsModelSerializer):
         }
 
 class BiberonSerializer(FlexFieldsModelSerializer):
+    id_baby = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = biberon
         fields = [
             "id_biberon",
+            "id_baby",
             "quantity",
             "nb_biberon",
         ]
@@ -60,16 +63,21 @@ class BiberonSerializer(FlexFieldsModelSerializer):
         }
 
 class ForumSerializer(FlexFieldsModelSerializer):
+    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = forum
         fields = [
             "id_forums",
+            "id_user"
         ]
         expandable_fields = {
             'id_user': ('reviews.UserSerializer'),
         }
 
 class MessageSerializer(FlexFieldsModelSerializer):
+    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = message
         fields = [
@@ -84,10 +92,13 @@ class MessageSerializer(FlexFieldsModelSerializer):
         }
 
 class PregnancieSerializer(FlexFieldsModelSerializer):
+    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = pregnancie
         fields = [
             "id_pregnancy",
+            "id_user",
             "pregnancy_date",
             "amenorhea_date",
         ]

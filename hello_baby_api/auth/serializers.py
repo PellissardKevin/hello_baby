@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from reviews.models import user
+import bcrypt
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -8,40 +9,25 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
     class Meta:
-        model = user
-        fields = ('firstname', 'lastname', 'email', 'password', 'birthday', 'couple', 'weight', 'picture_profil')
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'password')
         extra_kwargs = {
+            'username': {'required': True},
             'email': {'required': True},
-            'firstname': {'required': True},
-            'lastname': {'required': False, 'default': None},
-            'birthday': {'required': False, 'default': None},
-            'couple': {'required': False, 'default': None},
-            'weight': {'required': False, 'default': None},
-            'picture_profil': {'required': False, 'default': None},
+            'first_name': {'required': False},
+            'last_name': {'required': False, 'default': None}
         }
 
     def create(self, validated_data):
-        userbaby = user.objects.create(
-            firstname=validated_data['firstname'],
-            lastname=validated_data['lastname'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            birthday=validated_data['birthday'],
-            couple=validated_data['couple'],
-            weight=validated_data['weight']
-        )
-
         userAuth = User.objects.create(
+            first_name=validated_data['first_name'],
             username=validated_data['email'],
-            email=validated_data['email'],
-            first_name=validated_data['firstname']
+            email=validated_data['email']
         )
-
         userAuth.set_password(validated_data['password'])
         userAuth.save()
-        userbaby.save()
 
-        return userAuth, userbaby
+        return userAuth
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):

@@ -9,9 +9,10 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
-from KivyCalendar import CalendarWidget
 from datetime import datetime, timedelta
+from date_picker_widget import CalendarPopup
 import requests
+import bcrypt
 from kivy.graphics.texture import Texture
 
 Builder.load_file("Test_Nad/accountfile.kv")
@@ -25,25 +26,18 @@ class Login(Screen):
         response = requests.post(url, data=data)
         if response.status_code == 201 or response.status_code == 200:
             print("Authentification réussie!")
+            user_id = requests.get("http://127.0.0.1:8000/user/?expand=email&email=%s" % email).json()[0]['id_user']
+            token = response.json()['access']
+            headers = {'Authorization': f'Bearer {token}'}
+            response = requests.get('http://127.0.0.1/user/{user_id}', headers=headers)
         else:
             print("Authentification échouée!")
 
 
 class Register(Screen):
-        # State labels
-    slabel1 = StringProperty()
-    slabel2 = StringProperty()
-
-    def savedstate(self):
-        # Here we can retrieve user saved radio button state if one exists
-        # Assign optional label values
-        self.slabel1 = "Oui"
-        self.slabel2 = "Non"
-        return ["down", "normal"]
-
-    def setDate(self, *args):
-        popup = Popup(title='Insert Date', content=CalendarWidget(), size_hint=(.9, .5)).open()
-        print(popup)
+    def __init__(self, **kwargs):
+        super(Register, self).__init__(**kwargs)
+        self.setData = CalendarPopup(size_hint=(0.8, 0.6))
 
     def create(
         self,
@@ -52,7 +46,7 @@ class Register(Screen):
         password,
         lastname=None,
         birthday=None,
-        couple=savedstate,
+        couple=False,
         weight=None,
     ):
         url = "http://127.0.0.1:8000/user/"
@@ -65,30 +59,47 @@ class Register(Screen):
             "couple": couple,
             "weight": weight,
         }
-        response = requests.post(url, data=data)
-        if response.status_code == 201 or response.status_code == 200:
-            print("Enregistrement réussie!")
-        else:
-            print("Enregistrement échouée!")
+        # response_reg = requests.post("http://127.0.0.1:8000/auth/register/", data={
+        #     "first_name": firstname,
+        #     "username": email,
+        #     "email": email,
+        #     "password": password
+        # })
+
+        # Generate a salt
+        salt = bcrypt.gensalt()
+        # converting password to array of bytes
+        bytes = password.encode('utf-8')
+        # Hash the password
+        hashed_password = bcrypt.hashpw(bytes, salt)
+
+        data['password'] = hashed_password
+        # response = requests.post(url, data=data)
+        # if ((response.status_code == 201 or response.status_code == 200 ) and
+        #         (response_reg.status_code == 200 or response_reg.status_code == 201)):
+        #     print("Enregistrement réussie!")
+        # else:
+        #     print("Enregistrement échouée!")
 
     def createPregnancie(
         self,
         email,
-        pregnancie_date=None,
+        pregnancie_date,
     ):
-        url = "http://127.0.0.1:8000/pregnancie/"
+        url_preg = "http://127.0.0.1:8000/pregnancie/"
         data = {
             "id_user": '',
-            "pregnancie_date": pregnancie_date,
+            "pregnancy_date": '',
             "amenorhea_date": ''
         }
-        user = requests.get("http://127.0.0.1:8000/user/", params=email)
-        datetime_obj = pregnancie_date
-        data['pregnancie_date'] = datetime_obj
+        user = requests.get("http://127.0.0.1:8000/user/?expand=email&email=%s" % email).json()
+        datetime_obj = datetime.strptime(pregnancie_date, '%d/%m/%Y')
+
+        data['id_user'] = 2
+        data['pregnancy_date'] = datetime_obj
         data['amenorhea_date'] = datetime_obj + timedelta(weeks=3)
 
-        response = requests.post(url, data=data)
-
+        response = requests.post(url_preg, data=data)
         if response.status_code == 201 or response.status_code == 200:
             print("Enregistrement Grossesse réussie!")
         else:

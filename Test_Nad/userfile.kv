@@ -87,14 +87,14 @@
                 input_type: "text"
 
             Label:
-                text: 'Date de grossesse(YYYY-MM-DD):'
+                text: 'Date de grossesse:'
                 color: 0, 0, 0, 1
             TextInput:
                 id: pregnancie_date
                 padding: 5
                 font_size: 12
                 multiline: False
-                on_focus: root.setDate()
+                on_focus: root.setData.open(pregnancie_date)
 
             Label:
                 text: 'Email :*'
@@ -124,23 +124,13 @@
                 input_type: "text"
 
             Label:
-                id: couple
                 text: 'En couple :'
                 color: 0, 0, 0, 1
-            CheckBox:
-                id: rbutton1
-                group: 'radio button'
-                state: root.savedstate()[0]
-            CheckBox:
-                id: rbutton2
-                group: 'radio button'
-                state: root.savedstate()[1]
-            Label:
-                id: label1
-                text: root.slabel1
-            Label:
-                id: label2
-                text: root.slabel2
+            TextInput:
+                id: couple
+                padding: 5
+                font_size: 12
+                input_type: "text"
 
 
         Label:

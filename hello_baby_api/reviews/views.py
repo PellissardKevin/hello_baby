@@ -2,13 +2,12 @@ from .serializers import UserSerializer, ImageSerializer, BabySerializer, Pregna
 from .models import user, Image, baby, pregnancie
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_flex_fields.views import FlexFieldsMixin, FlexFieldsModelViewSet
-from rest_flex_fields import is_expanded
 from rest_framework.permissions import IsAuthenticated
 
 
 class UserViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = UserSerializer
-    permit_list_expands = ['firstname', 'lastname', 'email', 'password', 'birthday', 'couple', 'weight']
+    filterset_fields = ('id_user','email',)
     def get_queryset(self):
         queryset = user.objects.all()
         return queryset
@@ -30,7 +29,6 @@ class BabyViewSet(FlexFieldsMixin, ModelViewSet):
 class PregnancieViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = PregnancieSerializer
     filterset_fields = ('id_user',)
-    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         queryset = pregnancie.objects.all()
         return queryset

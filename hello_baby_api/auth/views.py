@@ -2,6 +2,7 @@ from .serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUse
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
 from django.contrib.auth.models import User
+from reviews.models import user
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
@@ -23,7 +24,6 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class UpdateProfileView(generics.UpdateAPIView):
-
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
