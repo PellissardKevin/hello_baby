@@ -50,7 +50,7 @@
 		BoxLayout:
 			orientation: 'vertical'
 			spacing: 10
-			padding: ('50dp', '750dp')
+			padding: ('50dp', '350dp')
 			pos_hint: {'top': 1.0}
 
 			Label:
@@ -65,6 +65,40 @@
 						size: self.size
 						texture: Gradient.vertical(get_color_from_hex("FF8F59"), get_color_from_hex("FFB997"))
 						radius: [15, 15, 15, 15]
+
+		BoxLayout:
+			orientation:'vertical'
+			spacing: 5
+			padding: 20
+
+			MapView:
+				id: mapview
+				zoom: 6
+				lat: 46.603354
+				lon: 2.243674
+				size_hint: (1, 3)
+
+		BoxLayout:
+			orientation:'vertical'
+			spacing: 5
+			padding: 20
+
+			MapMarker:
+				lat: 46.603354
+				lon: 2.243674
+
+			TextInput:
+				id: search_input
+				size_hint_y: None
+				font_size: 12
+				height: dp(50)
+
+			Button:
+				text: 'Search'
+				size_hint_y: None
+				height: dp(50)
+				background_color: 'blue'
+				on_press: root.search_location(search_input.text)
 
 		BoxLayout:
 			orientation: 'vertical'
