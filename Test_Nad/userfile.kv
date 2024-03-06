@@ -84,7 +84,9 @@
                 id: birthday
                 padding: 5
                 font_size: 12
-                input_type: "text"
+                multiline: False
+                on_focus: root.setData.open(birthday)
+
 
             Label:
                 text: 'Date de grossesse:'
