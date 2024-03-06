@@ -30,7 +30,7 @@ class Login(Screen):
             user_id = user[0]['id_user']
             token = response.json()['access']
             headers = {'Authorization': f'Bearer {token}'}
-            response = requests.get('http://127.0.0.1/user/{user_id}', headers=headers)
+            response = requests.get(f'http://127.0.0.1:8000/user/{user_id}', headers=headers)
         else:
             print("Authentification échouée!")
 

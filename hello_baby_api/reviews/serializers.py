@@ -106,16 +106,6 @@ class PregnancieSerializer(FlexFieldsModelSerializer):
             'id_user': ('reviews.UserSerializer')
         }
 
-        def create_preg(self, validated_data):
-            pregnancy = pregnancie.objects.create(
-                id_user=validated_data['id_user'],
-                pregnancy_date=validated_data['pregnancy_date'],
-                amenorhea_date=validated_data['amenorhea_date']
-            )
-            pregnancy.save()
-
-            return pregnancy
-
 class ImageSerializer(FlexFieldsModelSerializer):
     image = VersatileImageFieldSerializer(
         sizes='product_headshot'
