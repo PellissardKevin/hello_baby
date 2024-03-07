@@ -12,11 +12,11 @@ Window.size = (430, 932)
 kivy.require('2.0.0')
 
 
-class User(BoxLayout):
+class Register(BoxLayout):
     def __init__(self, nom='', prénom='', date_de_naissance='%d-%m-%Y',
                  poids=0, début_de_grossesse='%d-%m-%Y', couple=False,
                  email='', mot_de_passe=''):
-        super(User, self).__init__()
+        super(Register, self).__init__()
         self.nom = nom
         self.prénom = prénom
         self.date_de_naissance = date_de_naissance
@@ -32,7 +32,7 @@ class User(BoxLayout):
 
 class userfile(App):
     def build(self):
-        return User()
+        return Register()
 
 
 if __name__ == '__main__':

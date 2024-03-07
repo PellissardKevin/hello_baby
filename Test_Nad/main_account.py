@@ -11,7 +11,7 @@ Window.size = (430, 932)
 kivy.require('2.0.0')
 
 
-class Account(BoxLayout):
+class Login(BoxLayout):
     pass
 
 
