@@ -92,16 +92,16 @@ class MessageSerializer(FlexFieldsModelSerializer):
         }
 
 class PregnancieSerializer(FlexFieldsModelSerializer):
-    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+    id_user = serializers.PrimaryKeyRelatedField(queryset=user.objects.all())
 
     class Meta:
         model = pregnancie
-        fields = [
+        fields = (
             "id_pregnancy",
-            "id_user",
             "pregnancy_date",
             "amenorhea_date",
-        ]
+            "id_user"
+        )
         expandable_fields = {
             'id_user': ('reviews.UserSerializer')
         }
