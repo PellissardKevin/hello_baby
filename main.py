@@ -13,10 +13,12 @@ from datetime import datetime, timedelta
 from date_picker_widget import CalendarPopup
 import requests
 import bcrypt
+from Test_Nad.main_home_user import Home_user
 from kivy.graphics.texture import Texture
 
 Builder.load_file("Test_Nad/accountfile.kv")
 Builder.load_file("Test_Nad/userfile.kv")
+Builder.load_file("Test_Nad/userhome.kv")
 
 
 class Login(Screen):
@@ -26,11 +28,12 @@ class Login(Screen):
         response = requests.post(url, data=data)
         if response.status_code == 201 or response.status_code == 200:
             print("Authentification réussie!")
-            user = requests.get("http://127.0.0.1:8000/user/?expand=email&email=%s" % email).json()
+            user = requests.get(f"http://127.0.0.1:8000/user/?expand=email&email={email}").json()
             user_id = user[0]['id_user']
             token = response.json()['access']
             headers = {'Authorization': f'Bearer {token}'}
             response = requests.get(f'http://127.0.0.1:8000/user/{user_id}', headers=headers)
+            self.manager.current = 'home'
         else:
             print("Authentification échouée!")
 
@@ -118,6 +121,7 @@ class Main(App):
         sm = ScreenManager(transition=SlideTransition())
         sm.add_widget(Login(name="login"))
         sm.add_widget(Register(name="register"))
+        sm.add_widget(Home_user(name="home"))
 
         return sm
 
