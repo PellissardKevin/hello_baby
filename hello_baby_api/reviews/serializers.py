@@ -81,8 +81,8 @@ class MessageSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = message
         fields = [
-            "id_messages",
-            "text_messages"
+            "id_message",
+            "text_message",
             "id_forum",
             "id_user",
         ]
