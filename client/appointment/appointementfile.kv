@@ -98,8 +98,10 @@
                     pos: self.pos
                     size: self.size
 
-            Label:
+            Button:
                 text: 'Contact'
                 color: 1, 1, 1, 1
+                background_color: 'blue'
                 font_size: 20
                 height: dp(25)
+                on_press : root.manager.current = 'contact'

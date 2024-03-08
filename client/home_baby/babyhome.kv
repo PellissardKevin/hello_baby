@@ -51,13 +51,29 @@
             marging: 20
             direction: 'right'
             AsyncImage:
-                source: 'http://placehold.it/480x270.png&text=slide-1.png'
+                source: 'client/images/image_slide/Bébé1.jpg'
             AsyncImage:
-                source: 'http://placehold.it/480x270.png&text=slide-2.png'
+                source: 'client/images/image_slide/Bébé2.jpg'
             AsyncImage:
-                source: 'http://placehold.it/480x270.png&text=slide-3.png'
+                source: 'client/images/image_slide/Bébé3.jpg'
             AsyncImage:
-                source: 'http://placehold.it/480x270.png&text=slide-4.png'
+                source: 'client/images/image_slide/Bébé4.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé5.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé6.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé7.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé8.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé9.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé10.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé11.jpg'
+            AsyncImage:
+                source: 'client/images/image_slide/Bébé12.jpg'
 
         FloatLayout:
             size_hint_x: None
@@ -179,8 +195,10 @@
                     pos: self.pos
                     size: self.size
 
-            Label:
+            Button:
                 text: 'Contact'
                 color: 1, 1, 1, 1
+                background_color: 'blue'
                 font_size: 20
                 height: dp(25)
+                on_press : root.manager.current = 'contact'

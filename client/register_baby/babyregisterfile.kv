@@ -3,11 +3,11 @@
 #:import Gradient kivy_gradient.Gradient
 
 <Baby>:
-    answer_input1: answer_input1
-    answer_input2: answer_input2
-    answer_input3: answer_input3
-    answer_input4: answer_input4
-    answer_input5: answer_input5
+    firstname: firstname
+    lastname: lastname
+    birthday: birthday
+    weight: weight
+    size_baby: size_baby
 
     BoxLayout:
         orientation: 'vertical'
@@ -61,7 +61,7 @@
                 text: 'Prénom :*'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input1
+                id: firstname
                 padding: 20, 20, 20, 20
                 font_size: 12
                 input_type: "text"
@@ -70,25 +70,25 @@
                 text: 'Nom :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input2
+                id: lastname
                 padding: 20, 20, 20, 20
                 font_size: 12
                 input_type: "text"
 
             Label:
-                text: 'Date de naissance :'
+                text: 'Date de naissance :*'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input3
+                id: birthday
                 padding: 20, 20, 20, 20
                 font_size: 12
-                input_type: "text"
+                on_focus: root.setData.open(birthday)
 
             Label:
                 text: 'Poids actuel :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input4
+                id: weight
                 padding: 20, 20, 20, 20
                 font_size: 12
                 input_type: "text"
@@ -97,7 +97,7 @@
                 text: 'Taille :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: answer_input5
+                id: size_baby
                 padding: 20, 20, 20, 20
                 font_size: 12
                 input_type: "text"
@@ -116,7 +116,9 @@
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             background_color: 'blue'
-            on_press: root.create()
+            on_press:
+                root.create_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
+                root.manager.current = "babyhome"
 
         Button:
             text: 'Ajouter un nouveau profil'
@@ -125,4 +127,6 @@
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             background_color: 'blue'
-            on_press: root.create_new_baby()
+            on_press:
+                root.create_new_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
+                root.manager.current = "babyhome"
