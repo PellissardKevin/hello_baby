@@ -1,0 +1,156 @@
+#:kivy 2.0.0
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
+<Register>:
+    answer_input1: firstname
+    answer_input2: lastname
+    answer_input3: birthday
+    answer_input5: email
+    answer_input6: password
+    answer_input7: weight
+    answer_input8: couple
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '5dp'
+        padding: '5dp'
+
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
+
+        Button:
+            size_hint: None, None
+            size: dp(24), dp(24)
+            pos_hint: {'top': 1.0, 'left': 1.0}
+            background_normal: "client/images/fleche_retour.png"
+            on_press: root.manager.current = "login"
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: '5dp'
+
+            Label:
+                text: 'Hello Baby !'
+                color: 0, 0, 0, 1
+                font_size: 30
+                size_hint: 1.0, 0.2
+                padding: ('10dp', '10dp')
+                background_color: "#99CCFF"
+
+            Image:
+                source: "client/images/hello_baby_logo.png"
+                allow_stretch: False
+                keep_ratio: True
+                size_hint_y: 0.5
+
+            Label:
+                text: 'Création de compte'
+                color: 0, 0, 0, 1
+                font_size: 12
+                size_hint: 1.0, 0.2
+                padding: ('10dp', '10dp')
+
+        GridLayout:
+            cols: 2
+            spacing: '5dp'
+            padding: '25dp'
+
+            Label:
+                text: 'Prénom :*'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: firstname
+                padding: 5
+                font_size: 12
+                input_type: "text"
+
+            Label:
+                text: 'Nom :'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: lastname
+                padding: 5
+                font_size: 12
+                input_type: "text"
+
+            Label:
+                text: 'Date de naissance :'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: birthday
+                padding: 5
+                font_size: 12
+                multiline: False
+                on_focus: root.setData.open(birthday)
+
+
+            Label:
+                text: 'Date de grossesse:'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: pregnancie_date
+                padding: 5
+                font_size: 12
+                multiline: False
+                on_focus: root.setData.open(pregnancie_date)
+
+            Label:
+                text: 'Email :*'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: email
+                padding: 5
+                font_size: 12
+                input_type: "text"
+
+            Label:
+                text: 'Mot de passe :*'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: password
+                padding: 5
+                font_size: 12
+                input_type: "text"
+                password:True
+
+            Label:
+                text: 'Poids actuel :'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: weight
+                padding: 5
+                font_size: 12
+                input_type: "text"
+
+            Label:
+                text: 'En couple :'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: couple
+                padding: 5
+                font_size: 12
+                input_type: "text"
+
+
+        Label:
+            text: '*obligatoire'
+            color: 0, 0, 0, 1
+            font_size: 10
+            size_hint: 0.2, 0.2
+            padding: ('10dp', '10dp')
+
+        Button:
+            text: 'Créer'
+            color: 1, 1, 1, 1
+            size_hint: None, None
+            size: 150, 50
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            background_color: 'blue'
+            on_press:
+                root.create(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.couple.text, root.ids.weight.text)
+                root.createPregnancie(root.ids.email.text, root.ids.pregnancie_date.text)
+                root.manager.current = "login"

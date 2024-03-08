@@ -1,127 +1,51 @@
 #!/usr/bin/env python3
 
 from kivy.app import App, runTouchApp
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
-from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.uix.screenmanager import ScreenManager, SlideTransition
 from kivy.lang import Builder
-from kivy.uix.popup import Popup
-from datetime import datetime, timedelta
-from date_picker_widget import CalendarPopup
-import requests
-import bcrypt
-from Test_Nad.main_home_user import Home_user
-from kivy.graphics.texture import Texture
-
-Builder.load_file("Test_Nad/accountfile.kv")
-Builder.load_file("Test_Nad/userfile.kv")
-Builder.load_file("Test_Nad/userhome.kv")
-
-
-class Login(Screen):
-    def authenticate(self, email, password):
-        url = "http://127.0.0.1:8000/auth/login/"
-        data = {"username": email, "password": password}
-        response = requests.post(url, data=data)
-        if response.status_code == 201 or response.status_code == 200:
-            print("Authentification réussie!")
-            user = requests.get(f"http://127.0.0.1:8000/user/?expand=email&email={email}").json()
-            user_id = user[0]['id_user']
-            token = response.json()['access']
-            headers = {'Authorization': f'Bearer {token}'}
-            response = requests.get(f'http://127.0.0.1:8000/user/{user_id}', headers=headers)
-            self.manager.current = 'home'
-        else:
-            print("Authentification échouée!")
+from client.home_user.home_user import Home_user
+from client.register.Register import Register
+from client.login.Login import Login
+from client.chatbot.main_chatbot import Chatbot
+from client.contact.Contact import Contact
+from client.register_baby.register_baby import Baby
+from client.home_baby.home_baby import Home_baby
+from client.forums.forums import Forums
+from client.diagrams.diagrams import Diagrams
+from client.professionnal.professionnal import Professionnal
+from client.appointment.appointement import Appointement
 
 
-class Register(Screen):
-    def __init__(self, **kwargs):
-        super(Register, self).__init__(**kwargs)
-        self.setData = CalendarPopup(size_hint=(0.8, 0.6))
+Builder.load_file("client/login/loginfile.kv")
+Builder.load_file("client/register/registerfile.kv")
+Builder.load_file("client/home_user/userhome.kv")
+Builder.load_file("client/chatbot/chatbotfile.kv")
+Builder.load_file("client/appointment/appointementfile.kv")
+Builder.load_file("client/contact/contactfile.kv")
+Builder.load_file("client/diagrams/diagramsfile.kv")
+Builder.load_file("client/forums/forumsfile.kv")
+Builder.load_file("client/home_baby/babyhome.kv")
+Builder.load_file("client/register_baby/babyregisterfile.kv")
+Builder.load_file("client/professionnal/professionnalfile.kv")
 
-    def create(
-        self,
-        firstname,
-        email,
-        password,
-        lastname=None,
-        birthday=None,
-        couple=False,
-        weight=None,
-    ):
-        url = "http://127.0.0.1:8000/user/"
-        data = {
-            "firstname": firstname,
-            "email": email,
-            "password": password,
-            "lastname": lastname,
-            "birthday": birthday,
-            "couple": couple,
-            "weight": weight,
-        }
-        response_reg = requests.post("http://127.0.0.1:8000/auth/register/", data={
-            "first_name": firstname,
-            "username": email,
-            "email": email,
-            "password": password
-        })
-
-        # Generate a salt
-        salt = bcrypt.gensalt()
-        # converting password to array of bytes
-        bytes = password.encode('utf-8')
-        # Hash the password
-        hashed_password = bcrypt.hashpw(bytes, salt)
-
-        data['password'] = hashed_password
-        data['birthday'] = datetime.strptime(birthday, '%d/%m/%Y').strftime('%Y-%m-%d')
-        # send request to the endpoint
-        response = requests.post(url, data=data)
-        if ((response.status_code == 201 or response.status_code == 200 ) and
-                (response_reg.status_code == 200 or response_reg.status_code == 201)):
-            print("Enregistrement réussie!")
-        else:
-            print("Enregistrement échouée!")
-
-    def createPregnancie(
-        self,
-        email,
-        pregnancie_date,
-    ):
-        url_preg = "http://127.0.0.1:8000/pregnancie/"
-        data = {
-            "pregnancy_date": '',
-            "amenorhea_date": '',
-            "id_user": ''
-        }
-        # get the data of user
-        user = requests.get("http://127.0.0.1:8000/user/?expand=email&email=%s" % email).json()
-
-        # save and format date
-        datetime_obj = datetime.strptime(pregnancie_date, '%d/%m/%Y')
-        amenorhea_format = datetime_obj + timedelta(weeks=3)
-
-        data['id_user'] = user[0]['id_user']
-        data['pregnancy_date'] = datetime_obj.strftime('%Y-%m-%d')
-        data['amenorhea_date'] = amenorhea_format.strftime('%Y-%m-%d')
-
-        # send request to the endpoint
-        response = requests.post(url_preg, data=data)
-        if response.status_code == 201 or response.status_code == 200:
-            print("Enregistrement Grossesse réussie!")
-        else:
-            print("Enregistrement Grossesse échouée!")
 
 class Main(App):
     def build(self):
         sm = ScreenManager(transition=SlideTransition())
         sm.add_widget(Login(name="login"))
         sm.add_widget(Register(name="register"))
-        sm.add_widget(Home_user(name="home"))
+        sm.add_widget(Home_user(name="home_user"))
+        sm.add_widget(Chatbot(name="chatbot"))
+        sm.add_widget(Home_baby(name="babyhome"))
+        sm.add_widget(Baby(name="babyregister"))
+        sm.add_widget(Forums(name="forums"))
+        sm.add_widget(Diagrams(name="diagrams"))
+        sm.add_widget(Appointement(name="appointment"))
+        sm.add_widget(Professionnal(name="professionnal"))
+        sm.add_widget(Contact(name="contact"))
+
 
         return sm
 

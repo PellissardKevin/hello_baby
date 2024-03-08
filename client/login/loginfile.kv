@@ -1,0 +1,88 @@
+#:kivy 2.0.0
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
+<RegisterLabel@ButtonBehavior+Label>:
+<Login>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '5dp'
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: '5dp'
+            pos_hint: {'top': 1.0}
+
+            Image:
+                source: "client/images/hello_baby_logo.png"
+                allow_stretch: False
+                keep_ratio: True
+
+        BoxLayout:
+            orientation:'vertical'
+            spacing: '20dp'
+            pos_hint: {'top': 1.0}
+            padding: ('20dp', '250dp')
+
+            Label:
+                text:'Connexion'
+                color: 0 , 0 , 0 , 1
+                font_size: 20
+                padding: ('5dp', '25dp')
+
+            TextInput:
+                id: email
+                multiline:False
+                hint_text:"E-mail"
+                size_hint: None,None
+                size_hint_x: 1
+                height: 30
+                font_size: 12
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+            TextInput:
+                id: password
+                multiline:False
+                size_hint: None,None
+                size_hint_x: 1
+                height: 30
+                hint_text:"Mot de passe"
+                font_size: 12
+                password:True
+
+            Button:
+                size_hint: None,None
+                size_hint_x: 1
+                height: 40
+                text:'Log In'
+                font_size: 14
+                on_press: root.authenticate(root.ids.email.text, root.ids.password.text)
+
+        BoxLayout:
+            orientation:'horizontal'
+            spacing: '5dp'
+            size: '40dp','40dp'
+            pos_hint: {'bottom' : 1.0}
+            size_hint_y: None
+            height: dp(25)
+
+            Label:
+                text:'Not a user yet?'
+                color: 0,0,0
+                font_size: 12
+                halign:'left'
+
+            RegisterLabel:
+
+                height: 20
+                text:'Register'
+                font_size: 12
+                color: 0,0,0
+                on_press:
+                    root.manager.current = 'register'
+                    root.manager.transition.direction = 'left'

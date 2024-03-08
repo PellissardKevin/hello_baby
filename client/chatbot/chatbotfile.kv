@@ -1,0 +1,121 @@
+#:kivy 2.0.0
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+
+<ChatBot>:
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '5dp'
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
+
+        Button:
+            size_hint: None, None
+            size: dp(24), dp(24)
+            pos_hint: {'top': 1.0, 'left': 1.0}
+            background_normal: "client/images/fleche_retour.png"
+            on_press: root.manager.current = 'home_user'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: '5dp'
+            size: dp(40), dp(40)
+            pos_hint: {'top': 1.0}
+            size_hint_y: None
+            height: dp(25)
+
+            Image:
+                source: "client/images/hello_baby_logo_band.png"
+                allow_stretch: False
+                keep_ratio: False
+                size: dp(32), dp(32)
+
+            Label:
+                text: 'Hello Baby !'
+                color: 0, 0, 0, 1
+                font_size: 30
+                padding: ('5dp', '5dp')
+                background_color: "CC99FF"
+
+            Image:
+                source: "client/images/photo_profil.png"
+                allow_stretch: False
+                keep_ratio: False
+                size: dp(32), dp(32)
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 10
+            padding: ('50dp', '550dp')
+            pos_hint: {'top': 1.0}
+
+            Label:
+                text:'ChatBot'
+                color: 0 , 0 , 0 , 1
+                size_hint_y: None
+                height: 50
+                margin: 20
+                canvas.before:
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        texture: Gradient.vertical(get_color_from_hex("F2F200"), get_color_from_hex("FFFF80"))
+                        radius: [15, 15, 15, 15]
+
+        BoxLayout:
+            orientation:'vertical'
+            spacing: '5dp'
+            padding: 20
+            size_hint_y: None
+            height: 200
+
+            Label:
+                id: chatbot_response
+                text: ""
+                color: 0, 0, 0, 1
+                size_hint_y: None
+                height: self.texture_size[1]
+                text_size: self.width, 700
+                size: self.texture_size
+                padding: ('10dp', '10dp')
+                halign: 'center'
+                valign: 'middle'
+
+            TextInput:
+                id: user_input
+                hint_text: "Entrez votre message ici"
+                multiline: False
+                size_hint_y: None
+                height: dp(50)
+                padding: ('10dp', '10dp')
+                margin: 20
+
+            Button:
+                text: "Envoyer"
+                size_hint_y: None
+                background_color: 'blue'
+                height: dp(50)
+                margin: 20
+                on_press: root.send_message(user_input.text)
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(50)
+            canvas:
+                Color:
+                    rgba: 0.25, 0.5, 0.5, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Label:
+                text: 'Contact'
+                color: 1, 1, 1, 1
+                font_size: 20
+                height: dp(25)
