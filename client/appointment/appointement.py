@@ -6,15 +6,6 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 
 import webbrowser
-import sys
-import os
-
-# Ajoutez le chemin parent de hello_baby au chemin de recherche de Python
-current_dir = os.path.dirname(os.path.realpath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
-
-from hello_baby_api import config
 
 import datetime
 import os.path
@@ -65,7 +56,7 @@ class Appointement(Screen):
                     token.write(creds.to_json())
 
         try:
-            service = build("calendar", "v3", developerKey=config.google_key)
+            service = build("calendar", "v3", developerKey=hello_baby_api.config.google_key)
 
             # Call the Calendar API
             now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time

@@ -3,23 +3,58 @@
 import kivy
 from kivy.core.window import Window
 from kivy.app import App
-from kivy.uix.screenmanager import Screen
-from kivy.uix.carousel import Carousel
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
 
 
 Window.size = (430, 932)
 
 kivy.require('2.0.0')
 
-
 class Home_baby(Screen):
     def __init__(self, **kwargs):
         super(Home_baby, self).__init__(**kwargs)
+        self.dropdown = DropDown()
+        self.add_dropdown_content()
+
+    def add_dropdown_content(self):
+        # Ajoutez du contenu au menu déroulant
+        btn1 = Button(text='Profil', size_hint_y=None, height=20, width= 200)
+        btn1.bind(on_release=lambda btn: self.on_dropdown_select("register"))
+        self.dropdown.add_widget(btn1)
+
+        btn2 = Button(text='User home', size_hint_y=None, height=20, width= 200)
+        btn2.bind(on_release=lambda btn: self.on_dropdown_select("home_user"))
+        self.dropdown.add_widget(btn2)
+
+    def on_dropdown_select(self, target):
+        # Fonction appelée lorsque vous sélectionnez un bouton dans le menu déroulant
+        if target == "register":
+            self.manager.current = "register"
+        elif target == "home_user":
+            self.manager.current = "home_user"
+
+    def open_dropdown(self, widget):
+        # Ouvre le menu déroulant lorsque le bouton est relâché
+        self.dropdown.open(widget)
+
+
+class Register(Screen):
+    pass
+
+
+class Home_user(Screen):
+    pass
 
 
 class babyhome(App):
     def build(self):
-        return Home_baby()
+        sm = ScreenManager()
+        sm.add_widget(Home_baby(name='babyhome'))
+        sm.add_widget(Register(name='register'))
+        sm.add_widget(Home_user(name='home_user'))
+        return sm
 
 
 if __name__ == '__main__':
