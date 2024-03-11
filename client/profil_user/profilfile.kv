@@ -2,12 +2,14 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
 
-<Baby>:
-    firstname: firstname
-    lastname: lastname
-    birthday: birthday
-    weight: weight
-    size_baby: size_baby
+<Profil>:
+    answer_input1: firstname
+    answer_input2: lastname
+    answer_input3: birthday
+    answer_input5: email
+    answer_input6: password
+    answer_input7: weight
+    answer_input8: couple
 
     BoxLayout:
         orientation: 'vertical'
@@ -46,7 +48,7 @@
                 size_hint_y: 0.5
 
             Label:
-                text: 'Création du Profil bébé'
+                text: 'Votre Profil'
                 color: 0, 0, 0, 1
                 font_size: 12
                 size_hint: 1.0, 0.2
@@ -55,14 +57,14 @@
         GridLayout:
             cols: 2
             spacing: '5dp'
-            padding: '30dp'
+            padding: '25dp'
 
             Label:
                 text: 'Prénom :*'
                 color: 0, 0, 0, 1
             TextInput:
                 id: firstname
-                padding: 20, 20, 20, 20
+                padding: 5
                 font_size: 12
                 input_type: "text"
 
@@ -71,36 +73,68 @@
                 color: 0, 0, 0, 1
             TextInput:
                 id: lastname
-                padding: 20, 20, 20, 20
+                padding: 5
                 font_size: 12
                 input_type: "text"
 
             Label:
-                text: 'Date de naissance :*'
+                text: 'Date de naissance :'
                 color: 0, 0, 0, 1
             TextInput:
                 id: birthday
-                padding: 20, 20, 20, 20
+                padding: 5
                 font_size: 12
+                multiline: False
                 on_focus: root.setData.open(birthday)
+
+
+            Label:
+                text: 'Date de grossesse:'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: pregnancie_date
+                padding: 5
+                font_size: 12
+                multiline: False
+                on_focus: root.setData.open(pregnancie_date)
+
+            Label:
+                text: 'Email :*'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: email
+                padding: 5
+                font_size: 12
+                input_type: "text"
+
+            Label:
+                text: 'Mot de passe :*'
+                color: 0, 0, 0, 1
+            TextInput:
+                id: password
+                padding: 5
+                font_size: 12
+                input_type: "text"
+                password:True
 
             Label:
                 text: 'Poids actuel :'
                 color: 0, 0, 0, 1
             TextInput:
                 id: weight
-                padding: 20, 20, 20, 20
+                padding: 5
                 font_size: 12
                 input_type: "text"
 
             Label:
-                text: 'Taille :'
+                text: 'En couple :'
                 color: 0, 0, 0, 1
             TextInput:
-                id: size_baby
-                padding: 20, 20, 20, 20
+                id: couple
+                padding: 5
                 font_size: 12
                 input_type: "text"
+
 
         Label:
             text: '*obligatoire'
@@ -109,24 +143,23 @@
             size_hint: 0.2, 0.2
             padding: ('10dp', '10dp')
 
-        Button:
-            text: 'Valider le profil'
+		Button:
+            text: 'Modifier le mot de passe'
             color: 1, 1, 1, 1
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             background_color: 'blue'
-            on_press:
-                root.create_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
-                root.manager.current = "babyhome"
+            on_press: root.upgrade()
 
         Button:
-            text: 'Valider et ajouter un bébé'
+            text: 'Supprimer le Profil'
             color: 1, 1, 1, 1
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            background_color: 'blue'
+            background_color: 'red'
             on_press:
-                root.create_new_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
-                root.manager.current = "babyregister"
+                root.delete(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.couple.text, root.ids.weight.text)
+                root.deletePregnancie(root.ids.email.text, root.ids.pregnancie_date.text)
+                root.manager.current = "login"

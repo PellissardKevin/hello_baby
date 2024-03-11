@@ -23,7 +23,7 @@ class Home_user(Screen):
     def add_dropdown_content(self):
         # Ajoutez du contenu au menu déroulant
         btn1 = Button(text='Profil', size_hint_y=None, height=20, width=500)
-        btn1.bind(on_release=lambda btn: self.on_dropdown_select("register"))
+        btn1.bind(on_release=lambda btn: self.on_dropdown_select("profil_user"))
         self.dropdown.add_widget(btn1)
 
         btn2 = Button(text='Bébé home', size_hint_y=None, height=20, width=500)
@@ -32,8 +32,8 @@ class Home_user(Screen):
 
     def on_dropdown_select(self, target):
         # Fonction appelée lorsque vous sélectionnez un bouton dans le menu déroulant
-        if target == "register":
-            self.manager.current = "register"
+        if target == "profil_user":
+            self.manager.current = "profil_user"
         elif target == "babyhome":
             self.manager.current = "babyhome"
 
@@ -42,7 +42,7 @@ class Home_user(Screen):
         self.dropdown.open(widget)
 
 
-class Register(Screen):
+class Profil(Screen):
     pass
 
 
@@ -54,7 +54,7 @@ class userhome(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(Home_user(name='home_user'))
-        sm.add_widget(Register(name='register'))
+        sm.add_widget(Profil(name='profil_user'))
         sm.add_widget(Home_baby(name='babyhome'))
         return sm
 

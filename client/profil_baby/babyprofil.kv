@@ -2,7 +2,7 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
 
-<Baby>:
+<Profil_baby>:
     firstname: firstname
     lastname: lastname
     birthday: birthday
@@ -25,7 +25,7 @@
             size: dp(24), dp(24)
             pos_hint: {'top': 1.0, 'left': 1.0}
             background_normal: "client/images/fleche_retour.png"
-            on_press: root.manager.current = "home_user"
+            on_press: root.manager.current = "babyhome"
 
         BoxLayout:
             orientation: 'vertical'
@@ -46,7 +46,7 @@
                 size_hint_y: 0.5
 
             Label:
-                text: 'Création du Profil bébé'
+                text: 'Profil bébé'
                 color: 0, 0, 0, 1
                 font_size: 12
                 size_hint: 1.0, 0.2
@@ -110,23 +110,22 @@
             padding: ('10dp', '10dp')
 
         Button:
-            text: 'Valider le profil'
+            text: 'Modifier le profil'
             color: 1, 1, 1, 1
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             background_color: 'blue'
             on_press:
-                root.create_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
-                root.manager.current = "babyhome"
+                root.upgrade_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
 
         Button:
-            text: 'Valider et ajouter un bébé'
+            text: 'Supprimer le Profil du bébé'
             color: 1, 1, 1, 1
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            background_color: 'blue'
+            background_color: 'red'
             on_press:
-                root.create_new_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
-                root.manager.current = "babyregister"
+                root.delete_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
+                root.manager.current = "home_user"
