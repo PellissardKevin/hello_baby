@@ -1,9 +1,11 @@
 from .serializers import UserSerializer, ImageSerializer, BabySerializer, PregnancieSerializer, ForumSerializer, MessageSerializer, BiberonSerializer
 from .models import user, Image, baby, pregnancie, forum, message, biberon
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework import generics
 from rest_flex_fields.views import FlexFieldsMixin, FlexFieldsModelViewSet
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.response import Response
+from rest_framework import status
 
 class UserViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = UserSerializer
@@ -52,3 +54,23 @@ class BiberonViewSet(FlexFieldsMixin, ModelViewSet):
     def get_queryset(self):
         queryset = biberon.objects.all()
         return queryset
+
+class UserModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
+    queryset = user.objects.all()
+    filterset_fields = ('id_user','email',)
+    serializer_class = UserSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class BabyModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
+    queryset = baby.objects.all()
+    filterset_fields = ('id_user',)
+    serializer_class = BabySerializer
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
