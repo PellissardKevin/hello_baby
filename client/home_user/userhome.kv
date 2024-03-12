@@ -14,13 +14,6 @@
                 size: self.size
                 texture: Gradient.vertical(get_color_from_hex("CC99FF"), get_color_from_hex("99CCFF"))
 
-        Button:
-            size_hint: None, None
-            size: dp(24), dp(24)
-            pos_hint: {'top': 1.0, 'left': 1.0}
-            background_normal: "client/images/fleche_retour.png"
-            on_press: root.goBack()
-
         BoxLayout:
             orientation: 'horizontal'
             spacing: '5dp'

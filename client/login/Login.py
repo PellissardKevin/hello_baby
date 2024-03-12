@@ -10,6 +10,9 @@ Window.size = (430, 932)
 
 kivy.require('2.0.0')
 
+class AppState:
+    user_id = None
+    token = None
 
 class Login(Screen):
     def authenticate(self, email, password):
@@ -19,13 +22,14 @@ class Login(Screen):
         if response.status_code == 201 or response.status_code == 200:
             print("Authentification réussie!")
             user = requests.get(f"http://127.0.0.1:8000/user/?expand=email&email={email}").json()
-            user_id = user[0]['id_user']
-            token = response.json()['access']
-            headers = {'Authorization': f'Bearer {token}'}
-            if requests.get(f'http://127.0.0.1:8000/baby/?expand=id_user&id_user={user_id}', headers=headers).json() != [] :
+            AppState.user_id = user[0]['id_user']
+            AppState.token = response.json()['access']
+            headers = {'Authorization': f'Bearer {AppState.token}'}
+            baby_list = requests.get(f'http://127.0.0.1:8000/baby/?expand=id_user&id_user={AppState.user_id}', headers=headers).json()
+            if baby_list != [] :
                 self.manager.current = 'babyhome'
             else:
-                response = requests.get(f'http://127.0.0.1:8000/user/{user_id}', headers=headers)
+                response = requests.get(f'http://127.0.0.1:8000/user/{AppState.user_id}/', headers=headers)
                 self.manager.current = 'home_user'
         else:
             print("Authentification échouée!")

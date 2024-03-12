@@ -30,7 +30,7 @@ class UserSerializer(FlexFieldsModelSerializer):
 
 
 class BabySerializer(FlexFieldsModelSerializer):
-    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+    id_user = serializers.PrimaryKeyRelatedField(queryset=user.objects.all())
 
     class Meta:
         model = baby
@@ -48,7 +48,7 @@ class BabySerializer(FlexFieldsModelSerializer):
         }
 
 class BiberonSerializer(FlexFieldsModelSerializer):
-    id_baby = serializers.PrimaryKeyRelatedField(read_only=True)
+    id_baby = serializers.PrimaryKeyRelatedField(queryset=baby.objects.all())
 
     class Meta:
         model = biberon
@@ -63,12 +63,13 @@ class BiberonSerializer(FlexFieldsModelSerializer):
         }
 
 class ForumSerializer(FlexFieldsModelSerializer):
-    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+    id_user = serializers.PrimaryKeyRelatedField(queryset=user.objects.all())
 
     class Meta:
         model = forum
         fields = [
             "id_forums",
+            "title",
             "id_user"
         ]
         expandable_fields = {
@@ -76,7 +77,7 @@ class ForumSerializer(FlexFieldsModelSerializer):
         }
 
 class MessageSerializer(FlexFieldsModelSerializer):
-    id_user = serializers.PrimaryKeyRelatedField(read_only=True)
+    id_user = serializers.PrimaryKeyRelatedField(queryset=user.objects.all())
 
     class Meta:
         model = message

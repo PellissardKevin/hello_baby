@@ -42,6 +42,7 @@ class biberon(models.Model):
 
 class forum(models.Model):
     id_forums = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=56, null=True, blank=True)
     id_user = models.ForeignKey(user, on_delete=models.CASCADE)
 
 class message(models.Model):
