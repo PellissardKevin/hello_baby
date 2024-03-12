@@ -27,7 +27,6 @@ class Profil(Screen):
         password,
         lastname=None,
         birthday=None,
-        couple=False,
         weight=None,
     ):
         url = "http://127.0.0.1:8000/user/"
@@ -37,7 +36,6 @@ class Profil(Screen):
             "password": password,
             "lastname": lastname,
             "birthday": birthday,
-            "couple": couple,
             "weight": weight,
         }
         response_reg = requests.post("http://127.0.0.1:8000/auth/register/", data={

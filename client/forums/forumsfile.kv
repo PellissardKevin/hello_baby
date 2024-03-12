@@ -71,18 +71,43 @@
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
-                Label:
-                    text: '\n\n'.join(root.titles)
+                # Utiliser un BoxLayout pour afficher les titres de discussions
+                BoxLayout:
+                    orientation: 'vertical'
                     size_hint_y: None
-                    color: 0, 0, 0, 1
-                    height: self.texture_size[1]
-                    text_size: self.width, None
-                    size: self.texture_size
-                    padding: ('10dp', '10dp')
-                    halign: 'center'
-                    valign: 'middle'
-                    on_touch_down:
-                        if self.collide_point(*args[1].pos): root.open_comment_popup(self.text)
+                    height: self.minimum_height
+                    # Parcourir les clés (titres) du dictionnaire forums_data
+                    # et afficher chaque titre dans un Label
+                    Label:
+                        text: ''
+                        size_hint_y: None
+                        height: dp(50)
+                    GridLayout:
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        # Parcourir les clés (titres) du dictionnaire forums_data
+                        # et afficher chaque titre dans un Label
+                        # Chaque Label servira de bouton pour ouvrir la popup correspondante
+                        GridLayout:
+                            cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
+                            # Parcourir les clés (titres) du dictionnaire forums_data
+                            # et afficher chaque titre dans un Label
+                            # Chaque Label servira de bouton pour ouvrir la popup correspondante
+                            Label:
+                                text: '\n'.join(root.forums_data.keys())
+                                size_hint_y: None
+                                color: 0, 0, 0, 1
+                                height: self.texture_size[1]
+                                text_size: self.width, None
+                                size: self.texture_size
+                                padding: ('10dp', '10dp')
+                                halign: 'center'
+                                valign: 'middle'
+                                on_touch_down:
+                                    if self.collide_point(*args[1].pos): root.open_comment_popup(self.text)
 
         BoxLayout:
             orientation: 'vertical'

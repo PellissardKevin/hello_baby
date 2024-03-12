@@ -126,16 +126,6 @@
                 font_size: 12
                 input_type: "text"
 
-            Label:
-                text: 'En couple :'
-                color: 0, 0, 0, 1
-            TextInput:
-                id: couple
-                padding: 5
-                font_size: 12
-                input_type: "text"
-
-
         Label:
             text: '*obligatoire'
             color: 0, 0, 0, 1
@@ -160,6 +150,6 @@
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             background_color: 'red'
             on_press:
-                root.delete(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.couple.text, root.ids.weight.text)
+                root.delete(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.weight.text)
                 root.deletePregnancie(root.ids.email.text, root.ids.pregnancie_date.text)
                 root.manager.current = "login"
