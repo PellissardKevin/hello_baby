@@ -61,7 +61,16 @@
                 height: 40
                 text:'Log In'
                 font_size: 14
+                background_color: 'blue'
                 on_press: root.authenticate(root.ids.email.text, root.ids.password.text)
+
+            Button:
+                text:'Mot de passe oublié ?'
+                height: 20
+                font_size: 12
+                color: 0,0,0
+                background_color: '0000000'
+                on_press: root.password_forgotten()
 
         BoxLayout:
             orientation:'horizontal'
@@ -78,7 +87,6 @@
                 halign:'left'
 
             RegisterLabel:
-
                 height: 20
                 text:'Register'
                 font_size: 12
