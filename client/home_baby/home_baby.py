@@ -5,8 +5,6 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from client.login.Login import AppState
-from client.home_user.home_user import Home_user
-from client.home_baby.home_baby import Home_baby
 from client.profil_user.profil import Profil
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button

@@ -2,7 +2,6 @@ import kivy
 from kivy.core.window import Window
 from kivy.app import App
 from client.login.Login import AppState
-from client.home_baby.home_baby import Home_baby
 from kivy.uix.carousel import Carousel
 from kivy.uix.label import Label
 from kivy.uix.dropdown import DropDown
