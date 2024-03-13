@@ -36,7 +36,7 @@ class PregnancieViewSet(FlexFieldsMixin, ModelViewSet):
 
 class ForumViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = ForumSerializer
-    filterset_fields = ('id_user',)
+    filterset_fields = ('id_user', 'id_forum', 'title')
     def get_queryset(self):
         queryset = forum.objects.all()
         return queryset

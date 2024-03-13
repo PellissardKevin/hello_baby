@@ -13,6 +13,7 @@ kivy.require('2.0.0')
 class AppState:
     user_id = None
     token = None
+    id_forum = None
 
 class Login(Screen):
     def authenticate(self, email, password):
