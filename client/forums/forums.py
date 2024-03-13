@@ -39,7 +39,6 @@ class Forums(Screen):
             print("Discussion créée avec succès!")
             # Ajouter la discussion aux données locales
             self.forums_data[title] = message
-            requests.get(url)
             self.update_forum()
         else:
             print("Erreur lors de la création de la discussion:", response.text)
@@ -47,6 +46,10 @@ class Forums(Screen):
     def update_forum(self):
         # Effacer le contenu précédent dans le GridLayout
         self.ids.scroll_view.clear_widgets()
+
+        # Request pour récupéré l'id du forum
+        forums_data = requests.get(f'http://127.0.0.1:8000/forum/?title={title}').json()
+        AppState.id_forum = forums_data[0]['id_forums']
 
         # Créer un nouvel GridLayout pour contenir les labels des discussions
         layout = GridLayout(cols=1, size_hint_y=None)
@@ -142,8 +145,8 @@ class Forums(Screen):
         else:
             print("Erreur lors de la vérification de l'auteur du forum:", response.text)
 
-    def delete_forum(self, forum_id):
-        url = f'http://127.0.0.1:8000/forum/{forum_id}/'
+    def delete_forum(self, title):
+        url = f'http://127.0.0.1:8000/forum/{title}/'
         response = requests.delete(url)
         if response.status_code == 204:
             print("Discussion supprimée avec succès!")
