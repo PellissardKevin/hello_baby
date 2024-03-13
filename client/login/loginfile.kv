@@ -63,6 +63,7 @@
                 font_size: 14
                 background_color: 'blue'
                 on_press: root.authenticate(root.ids.email.text, root.ids.password.text)
+                on_release: root.clear_input()
 
             Button:
                 text:'Mot de passe oublié ?'

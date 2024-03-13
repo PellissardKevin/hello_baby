@@ -35,6 +35,11 @@ class Login(Screen):
         else:
             print("Authentification échouée!")
 
+    def clear_input(self):
+        # Accéder à l'objet TextInput par son ID et effacer son contenu
+        self.ids.email.text = ""
+        self.ids.password.text = ""
+
 class loginfile(App):
     def build(self):
         return Login()

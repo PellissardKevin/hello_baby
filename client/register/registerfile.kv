@@ -143,3 +143,4 @@
                 root.create(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.weight.text)
                 root.createPregnancie(root.ids.email.text, root.ids.pregnancie_date.text)
                 root.manager.current = "login"
+            on_release: root.clear_input()

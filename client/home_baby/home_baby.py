@@ -4,10 +4,12 @@ import kivy
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.label import Label
 from client.login.Login import AppState
 from client.profil_user.profil import Profil
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+import requests
 
 
 Window.size = (430, 932)

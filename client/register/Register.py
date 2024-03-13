@@ -91,6 +91,15 @@ class Register(Screen):
         else:
             print("Enregistrement Grossesse échouée!")
 
+    def clear_input(self):
+        # Accéder à l'objet TextInput par son ID et effacer son contenu
+        self.ids.firstname.text = ""
+        self.ids.lastname.text = ""
+        self.ids.birthday.text = ""
+        self.ids.email.text = ""
+        self.ids.password.text = ""
+        self.ids.weight.text = ""
+
 
 class registerfile(App):
     def build(self):

@@ -130,3 +130,4 @@
             on_press:
                 root.create_new_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
                 root.manager.current = "babyregister"
+            on_release: root.clear_input()

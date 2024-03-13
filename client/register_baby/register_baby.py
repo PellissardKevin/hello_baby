@@ -38,6 +38,14 @@ class Baby(Screen):
             "weight": weight,
         }
 
+    def clear_input(self):
+        # Accéder à l'objet TextInput par son ID et effacer son contenu
+        self.ids.firstname.text = ""
+        self.ids.lastname.text = ""
+        self.ids.birthday.text = ""
+        self.ids.size.text = ""
+        self.ids.weight.text = ""
+
 class babyregisterfile(App):
     def build(self):
         return Baby()
