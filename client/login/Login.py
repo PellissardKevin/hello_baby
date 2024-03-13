@@ -14,6 +14,7 @@ class AppState:
     user_id = None
     token = None
     id_forum = None
+    id_message = None
 
 class Login(Screen):
     def authenticate(self, email, password):
