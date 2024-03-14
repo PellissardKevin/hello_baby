@@ -30,6 +30,7 @@ class Login(Screen):
             headers = {'Authorization': f'Bearer {AppState.token}'}
             baby_list = requests.get(f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}', headers=headers).json()
             if baby_list != [] :
+                AppState.baby_id = baby_list[0]['id_baby']
                 self.manager.current = 'babyhome'
             else:
                 response = requests.get(f'http://127.0.0.1:8000/user/{AppState.user_id}/', headers=headers)
