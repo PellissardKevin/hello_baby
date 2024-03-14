@@ -15,6 +15,7 @@ class AppState:
     token = None
     id_forum = None
     id_message = None
+    baby_id = None
 
 class Login(Screen):
     def authenticate(self, email, password):
@@ -23,11 +24,11 @@ class Login(Screen):
         response = requests.post(url, data=data)
         if response.status_code == 201 or response.status_code == 200:
             print("Authentification réussie!")
-            user = requests.get(f"http://127.0.0.1:8000/user/?expand=email&email={email}").json()
+            user = requests.get(f"http://127.0.0.1:8000/user/?email={email}").json()
             AppState.user_id = user[0]['id_user']
             AppState.token = response.json()['access']
             headers = {'Authorization': f'Bearer {AppState.token}'}
-            baby_list = requests.get(f'http://127.0.0.1:8000/baby/?expand=id_user&id_user={AppState.user_id}', headers=headers).json()
+            baby_list = requests.get(f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}', headers=headers).json()
             if baby_list != [] :
                 self.manager.current = 'babyhome'
             else:

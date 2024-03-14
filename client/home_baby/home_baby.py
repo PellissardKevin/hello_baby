@@ -30,7 +30,7 @@ class Home_baby(Screen):
         self.dropdown.add_widget(btn)
 
         # Django REST endpoint URL
-        endpoint_url = f'http://127.0.0.1:8000/baby/?expand=id_user&id_user={AppState.user_id}'
+        endpoint_url = f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}'
         try:
             # Make GET request to the endpoint
             response = requests.get(endpoint_url)
@@ -42,7 +42,7 @@ class Home_baby(Screen):
                     # Ajoutez du contenu au menu déroulant
                     name_baby = baby.get('firstname', 'Unknown')
                     btn = Button(text=f'{name_baby}', size_hint_y=None, height=20, width=500)
-                    btn.bind(on_release=lambda btn: self.on_dropdown_select("profil_user"))
+                    btn.bind(on_release=lambda btn, name=name_baby: self.on_dropdown_select(name))
                     self.dropdown.add_widget(btn)
         except Exception as e:
             self.add_widget(Label(text=f"Error: {e}"))
@@ -58,6 +58,10 @@ class Home_baby(Screen):
         elif target == "logout":
             response = requests.get('http://127.0.0.1:8000/logout/')
             self.manager.current = "login"
+        else:
+            baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}').json()
+            AppState.baby_id = baby[0]['id_baby']
+            self.manager.current = "babyhome"
 
     def open_dropdown(self, widget):
         # Ouvre le menu déroulant lorsque le bouton est relâché
