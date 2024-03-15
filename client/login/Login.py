@@ -16,6 +16,7 @@ class AppState:
     id_forum = None
     id_message = None
     baby_id = None
+    header = None
 
 
 class Login(Screen):
@@ -28,13 +29,13 @@ class Login(Screen):
             user = requests.get(f"http://127.0.0.1:8000/user/?email={email}").json()
             AppState.user_id = user[0]['id_user']
             AppState.token = response.json()['access']
-            headers = {'Authorization': f'Bearer {AppState.token}'}
-            baby_list = requests.get(f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}', headers=headers).json()
+            AppState.headers = {'Authorization': f'Bearer {AppState.token}'}
+            baby_list = requests.get(f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}', headers=AppState.headers).json()
             if baby_list != [] :
                 AppState.baby_id = baby_list[0]['id_baby']
                 self.manager.current = 'babyhome'
             else:
-                response = requests.get(f'http://127.0.0.1:8000/user/{AppState.user_id}/', headers=headers)
+                response = requests.get(f'http://127.0.0.1:8000/user/{AppState.user_id}/', headers=AppState.headers)
                 self.manager.current = 'home_user'
         else:
             print("Authentification échouée!")

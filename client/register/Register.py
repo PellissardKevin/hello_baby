@@ -5,6 +5,7 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from datetime import datetime, timedelta
+from client.login.Login import AppState
 from date_picker_widget import CalendarPopup
 import requests
 import bcrypt
@@ -85,7 +86,7 @@ class Register(Screen):
         data['amenorhea_date'] = amenorhea_format.strftime('%Y-%m-%d')
 
         # send request to the endpoint
-        response = requests.post(url_preg, data=data)
+        response = requests.post(url_preg, data=data, headers=AppState.header)
         if response.status_code == 201 or response.status_code == 200:
             print("Enregistrement Grossesse réussie!")
         else:

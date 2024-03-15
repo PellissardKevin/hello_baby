@@ -33,8 +33,7 @@ class Home_baby(Screen):
         endpoint_url = f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}'
         try:
             # Make GET request to the endpoint
-            headers = {'Authorization': f'Bearer {AppState.token}'}
-            response = requests.get(endpoint_url, headers=headers)
+            response = requests.get(endpoint_url, headers=AppState.headers)
             response_data = response.json()
 
             # Create a dynamic list based on the user ID
@@ -60,8 +59,7 @@ class Home_baby(Screen):
             response = requests.get('http://127.0.0.1:8000/logout/')
             self.manager.current = "login"
         else:
-            headers = {'Authorization': f'Bearer {AppState.token}'}
-            baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=headers).json()
+            baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.headers).json()
             AppState.baby_id = baby[0]['id_baby']
             self.manager.current = "babyhome"
 

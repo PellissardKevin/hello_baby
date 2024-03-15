@@ -45,7 +45,7 @@ class Diagrams(Screen):
         self.graph.ymax = 1000  # Définir ymax sur 1000 ou toute autre valeur appropriée pour l'axe Y
 
     def update_graph(self):
-        response = requests.get(f'http://127.0.0.1:8000/biberon/?id_baby={AppState.baby_id}')
+        response = requests.get(f'http://127.0.0.1:8000/biberon/?id_baby={AppState.baby_id}', headers=AppState.header)
         if response.status_code == 200:
             data = response.json()
             for entry in data:

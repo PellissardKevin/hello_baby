@@ -40,7 +40,7 @@ class Forums(Screen):
         # Appel de l'API pour créer la discussion
         url = 'http://127.0.0.1:8000/forum/'
         data = {'title': title, 'id_user': user_id}  # Ajout de l'ID de l'utilisateur
-        response = requests.post(url, data=data)
+        response = requests.post(url, data=data, headers=AppState.headers)
         # Vérifier la réponse
         if response.status_code == 201 or response.status_code == 200:
             print("Discussion créée avec succès!")
@@ -50,7 +50,7 @@ class Forums(Screen):
             # Maintenant, envoyons le message à la base de données
             message_url = f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}'
             message_data = {'id_forum': forum_id, 'id_user': user_id, 'text_message': message}
-            message_response = requests.post(message_url, data=message_data)
+            message_response = requests.post(message_url, data=message_data, headers=AppState.headers)
 
             if message_response.status_code == 201 or message_response.status_code == 200:
                 print("Message ajouté avec succès!")
@@ -68,13 +68,13 @@ class Forums(Screen):
         self.ids.scroll_view.clear_widgets()
 
         # Request pour récupérer l'id du forum
-        forum_response = requests.get(f'http://127.0.0.1:8000/forum/?title={title}')
+        forum_response = requests.get(f'http://127.0.0.1:8000/forum/?title={title}', headers=AppState.headers)
         if forum_response.status_code == 200 or forum_response.status_code == 201:
             forum_data = forum_response.json()
             if forum_data:
                 AppState.id_forum = forum_data[0]['id_forums']
                 # Request pour récupérer l'id des messages
-                message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}')
+                message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}', headers=AppState.headers)
                 if message_response.status_code == 200 or message_response.status_code == 201:
                     message_data = message_response.json()
                     if message_data:  # Vérification si message_data est vide ou non
@@ -165,7 +165,7 @@ class Forums(Screen):
     def check_and_add_delete_button(self, content, forum_id):
         # Vérifier si l'utilisateur est l'auteur du forum pour afficher le bouton de suppression
         url = f'http://127.0.0.1:8000/forum/{forum_id}/'
-        response = requests.get(url)
+        response = requests.get(url, headers=AppState.headers)
         if response.status_code == 200 or response.status_code == 201:
             forum_data = response.json()
             forum_author_id = forum_data.get('user_id')
@@ -182,7 +182,7 @@ class Forums(Screen):
 
     def delete_forum(self):
         url = f'http://127.0.0.1:8000/forum/{AppState.id_forum}/'
-        response = requests.delete(url)
+        response = requests.delete(url, headers=AppState.headers)
         if response.status_code == 204:
             print("Discussion supprimée avec succès!")
             # Supprimer la discussion des données locales
