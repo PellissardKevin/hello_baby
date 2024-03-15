@@ -32,6 +32,8 @@ class BabyViewSet(FlexFieldsMixin, ModelViewSet):
 class PregnancieViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = PregnancieSerializer
     filterset_fields = ('id_user',)
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         queryset = pregnancie.objects.all()
         return queryset
@@ -39,6 +41,8 @@ class PregnancieViewSet(FlexFieldsMixin, ModelViewSet):
 class ForumViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = ForumSerializer
     filterset_fields = ('id_user', 'id_forums', 'title')
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         queryset = forum.objects.all()
         return queryset
@@ -46,6 +50,8 @@ class ForumViewSet(FlexFieldsMixin, ModelViewSet):
 class MessageViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = MessageSerializer
     filterset_fields = ('id_user','id_forums',)
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         queryset = message.objects.all()
         return queryset
@@ -53,6 +59,8 @@ class MessageViewSet(FlexFieldsMixin, ModelViewSet):
 class BiberonViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = BiberonSerializer
     filterset_fields = ('id_baby',)
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         queryset = biberon.objects.all()
         return queryset
@@ -61,6 +69,7 @@ class UserModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
     queryset = user.objects.all()
     filterset_fields = ('id_user','email',)
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -71,6 +80,7 @@ class BabyModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
     queryset = baby.objects.all()
     filterset_fields = ('id_user',)
     serializer_class = BabySerializer
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()

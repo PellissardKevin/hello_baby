@@ -168,10 +168,7 @@ class Forums(Screen):
         response = requests.get(url, headers=AppState.headers)
         if response.status_code == 200 or response.status_code == 201:
             forum_data = response.json()
-            forum_author_id = forum_data.get('user_id')
-
-            print("Forum author ID:", forum_author_id)
-            print("Current user ID:", AppState.user_id)
+            forum_author_id = forum_data['id_user']
 
             if forum_author_id == AppState.user_id:
                 delete_button = Button(text='Supprimer', size_hint=(None, None), size=(100, sp(40)))
@@ -180,14 +177,14 @@ class Forums(Screen):
         else:
             print("Erreur lors de la vérification de l'auteur du forum:", response.text)
 
-    def delete_forum(self):
-        url = f'http://127.0.0.1:8000/forum/{AppState.id_forum}/'
+    def delete_forum(self, forum_id):
+        url = f'http://127.0.0.1:8000/forum/{forum_id}/'
         response = requests.delete(url, headers=AppState.headers)
         if response.status_code == 204:
             print("Discussion supprimée avec succès!")
             # Supprimer la discussion des données locales
             for title, data in self.forums_data.items():
-                if data.get('id') == AppState.id_forum:
+                if data['id'] == forum_id:
                     del self.forums_data[title]
                     break
             self.update_forum()

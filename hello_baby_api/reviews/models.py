@@ -38,7 +38,7 @@ class biberon(models.Model):
     id_biberon = models.AutoField(primary_key=True)
     id_baby = models.ForeignKey(baby, on_delete=models.CASCADE)
     quantity = models.IntegerField(null=True, blank=True)
-    nb_biberon = models.IntegerField(null=True, blank=True)
+    date_biberon = models.DateField(null=True, blank=True)
 
 class forum(models.Model):
     id_forums = models.AutoField(primary_key=True)
