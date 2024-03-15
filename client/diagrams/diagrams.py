@@ -8,12 +8,16 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
-from kivy.garden.graph import Graph, MeshLinePlot
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+import plotly.graph_objects as go
+from kivy.uix.label import Label
+import io
+from PIL import Image as PILImage
+import plotly.graph_objects as go
+from kivy.uix.image import Image
 from client.login.Login import AppState
 
-
 Window.size = (430, 932)
-
 
 kivy.require('2.0.0')
 
@@ -23,56 +27,82 @@ class Diagrams(Screen):
         super(Diagrams, self).__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical')
 
-        # Définir la taille du graphique
-        graph_size = (Window.width * 0.8, Window.height * 0.6)
-
-        # Créer le graphique
-        self.graph = Graph(xlabel='Time', ylabel='Quantity', size=graph_size)
-        self.plot = MeshLinePlot(color=[1, 0, 0, 1])
-        self.graph.add_plot(self.plot)
-        self.layout.add_widget(self.graph)
+        # Create the Plotly widget
+        self.plotly_widget = PlotlyWidget()
+        self.layout.add_widget(self.plotly_widget)
 
         self.add_widget(self.layout)
 
-        # Appeler la méthode pour mettre à jour le graphique
+        # Call the method to update the plot
         self.on_enter()
 
     def on_enter(self):
-        Clock.schedule_interval(self.update_graph, 5)  # Mettre à jour le graphique toutes les 5 secondes
+        self.update_graph()
 
     def update_graph(self, dt):
-        # Fonction pour mettre à jour le graphique avec les données de l'API
         try:
             response = requests.get(f'http://127.0.0.1:8000/biberon/?id_baby={AppState.baby_id}', headers=AppState.header)
-            if response.status_code == 200:
+            if response.status_code == 200 or response.status_code == 201:
                 data = response.json()
-                x_values = []  # Liste pour stocker les valeurs de l'axe X
-                y_values = []  # Liste pour stocker les valeurs de l'axe Y
+                x_values = []
+                y_values = []
                 for entry in data:
-                    # Convertir les dates en objets datetime
                     date_biberon = datetime.strptime(entry['date_biberon'], '%Y-%m-%dT%H:%M:%SZ')
-                    # Ajouter les données au graphique
-                    x_values.append(date_biberon.timestamp())  # Ajouter les dates en tant que valeurs X
-                    y_values.append(float(entry['quantity']))  # Convertir la quantité en flottant et l'ajouter comme valeur Y
+                    x_values.append(date_biberon)
+                    y_values.append(float(entry['quantity']))
 
-                # Mettre à jour le graphique
-                self.plot.points = zip(x_values, y_values)
+                self.plotly_widget.update_plot(x_values, y_values)
 
         except Exception as e:
-            print("Erreur lors de la récupération des données:", e)
+            print("Error fetching data:", e)
+
+    def get_data_from_response(self, data):
+        x_values = []
+        y_values = []
+        for entry in data:
+            date_biberon = datetime.strptime(entry['date_biberon'], '%Y-%m-%dT%H:%M:%SZ')
+            x_values.append(date_biberon)
+            y_values.append(float(entry['quantity']))
+        return x_values, y_values
+
+
+class PlotlyWidget(BoxLayout):
+    def __init__(self, **kwargs):
+        super(PlotlyWidget, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        self.plotly_figure = go.Figure()
+
+    def update_plot(self, x_values, y_values):
+        # Remove previous traces from the figure
+        self.plotly_figure.data = []
+
+        # Add new trace with updated data
+        self.plotly_figure.add_trace(go.Scatter(x=x_values, y=y_values, mode='lines+markers'))
+
+        # Convert Plotly figure to PIL image
+        buf = io.BytesIO()
+        self.plotly_figure.write_image(buf, format='png')
+        buf.seek(0)
+        pil_image = PILImage.open(buf)
+        pil_image.save('plotly_graph.png')  # Save the image temporarily
+
+        # Display the image using Kivy Image widget
+        self.clear_widgets()  # Remove previous image
+        self.add_widget(Image(source='plotly_graph.png', allow_stretch=True))
 
 
 class MyScreenManager(ScreenManager):
     pass
 
+
 class diagramsfile(App):
     def build(self):
-        # Créer une instance de GraphScreen
-        graph_screen = Diagrams(name='graph_screen')
+        # Create an instance of PlotlyDiagrams
+        plotly_diagrams_screen = Diagrams(name='plotly_diagrams_screen')
 
-        # Ajouter GraphScreen au ScreenManager
+        # Add PlotlyDiagrams to the ScreenManager
         sm = MyScreenManager()
-        sm.add_widget(graph_screen)
+        sm.add_widget(plotly_diagrams_screen)
 
         return sm
 
