@@ -56,7 +56,7 @@ class BiberonSerializer(FlexFieldsModelSerializer):
             "id_biberon",
             "id_baby",
             "quantity",
-            "nb_biberon",
+            "date_biberon",
         ]
         expandable_fields = {
             'id_baby': ('reviews.BabySerializer'),

@@ -2,7 +2,7 @@
 
 import kivy
 import requests
-import time
+from datetime import datetime
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.screenmanager import Screen, ScreenManager
@@ -24,10 +24,10 @@ class Diagrams(Screen):
         self.layout = BoxLayout(orientation='vertical')
 
         # Définir la taille du graphique
-        graph_size = (Window.width * 0.9, Window.height * 0.8)
+        graph_size = (Window.width * 0.8, Window.height * 0.6)
 
         # Créer le graphique
-        self.graph = Graph(xlabel='Time', ylabel='Value', size=graph_size)
+        self.graph = Graph(xlabel='Time', ylabel='Quantity', size=graph_size)
         self.plot = MeshLinePlot(color=[1, 0, 0, 1])
         self.graph.add_plot(self.plot)
         self.layout.add_widget(self.graph)
@@ -49,9 +49,11 @@ class Diagrams(Screen):
                 x_values = []  # Liste pour stocker les valeurs de l'axe X
                 y_values = []  # Liste pour stocker les valeurs de l'axe Y
                 for entry in data:
+                    # Convertir les dates en objets datetime
+                    date_biberon = datetime.strptime(entry['date_biberon'], '%Y-%m-%dT%H:%M:%SZ')
                     # Ajouter les données au graphique
-                    x_values.append(entry['date_biberon'])  # Ajouter les dates en tant que valeurs X
-                    y_values.append(entry['quantity'])      # Ajouter les quantités en tant que valeurs Y
+                    x_values.append(date_biberon.timestamp())  # Ajouter les dates en tant que valeurs X
+                    y_values.append(float(entry['quantity']))  # Convertir la quantité en flottant et l'ajouter comme valeur Y
 
                 # Mettre à jour le graphique
                 self.plot.points = zip(x_values, y_values)
