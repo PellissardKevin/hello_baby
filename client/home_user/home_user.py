@@ -34,7 +34,6 @@ class Home_user(Screen):
             # Make GET request to the endpoint
             response = requests.get(endpoint_url, headers=AppState.headers)
             response_data = response.json()
-
             # Create a dynamic list based on the user ID
             if response_data:
                 for baby in response_data:
@@ -55,7 +54,7 @@ class Home_user(Screen):
         if target == "profil_user":
             self.manager.current = "profil_user"
         elif target == "logout":
-            response = requests.get('http://127.0.0.1:8000/logout/')
+            response = requests.post('http://127.0.0.1:8000/auth/logout/')
             self.manager.current = "login"
         else:
             baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.headers).json()
