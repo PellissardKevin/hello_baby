@@ -35,6 +35,7 @@ class Home_baby(Screen):
             # Make GET request to the endpoint
             response = requests.get(endpoint_url, headers=AppState.headers)
             response_data = response.json()
+            print(response)
 
             # Create a dynamic list based on the user ID
             if response_data:
@@ -56,12 +57,12 @@ class Home_baby(Screen):
         if target == "profil_user":
             self.manager.current = "profil_user"
         elif target == "logout":
-            response = requests.get('http://127.0.0.1:8000/logout/')
+            response = requests.post('http://127.0.0.1:8000/auth/logout/')
             self.manager.current = "login"
         else:
             baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.headers).json()
             AppState.baby_id = baby[0]['id_baby']
-            self.manager.current = "babyhome"
+            self.manager.current = "babyprofil"
 
     def open_dropdown(self, widget):
         # Ouvre le menu déroulant lorsque le bouton est relâché
