@@ -28,13 +28,6 @@ class Forums(Screen):
     def __init__(self, **kwargs):
         super(Forums, self).__init__(**kwargs)
         self.popups = []
-        """self.update_interval = 30  # Définir l'intervalle de mise à jour en secondes
-        Clock.schedule_interval(self.update_data_from_server, self.update_interval)"""
-
-    """def update_data_from_server(self, title):
-        # Cette fonction sera appelée à intervalles réguliers pour mettre à jour les données depuis le serveur
-        # Mettez à jour les discussions et les messages depuis le serveur
-        self.update_forum(title)"""
 
     def create_forum(self, title, message, user_id):
         # Appel de l'API pour créer la discussion
@@ -64,36 +57,46 @@ class Forums(Screen):
             print("Erreur lors de la création de la discussion:", response.text)
 
     def update_forum(self, title):
-        # Effacer le contenu précédent dans le GridLayout
+        # Clear the previous content in the GridLayout
         self.ids.scroll_view.clear_widgets()
 
-        # Request pour récupérer l'id du forum
-        forum_response = requests.get(f'http://127.0.0.1:8000/forum/?title={title}', headers=AppState.header)
+        # Request to get all discussions
+        forum_response = requests.get('http://127.0.0.1:8000/forum/', headers=AppState.header)
         if forum_response.status_code == 200 or forum_response.status_code == 201:
             forum_data = forum_response.json()
             if forum_data:
-                AppState.id_forum = forum_data[0]['id_forums']
-                # Request pour récupérer l'id des messages
-                message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}', headers=AppState.header)
-                if message_response.status_code == 200 or message_response.status_code == 201:
-                    message_data = message_response.json()
-                    if message_data:  # Vérification si message_data est vide ou non
-                        AppState.id_message = message_data[0]['id_message']
+                # Create a new GridLayout to hold all forum labels
+                layout = GridLayout(cols=1, size_hint_y=None)
 
-            # Créer un nouvel GridLayout pour contenir les labels des discussions
-            layout = GridLayout(cols=1, size_hint_y=None)
+                for forums_item in forum_data:
+                    title = forums_item['title']
+                    AppState.id_forum = forums_item['id_forums']
 
-            # Parcourir les titres de discussion et les ajouter au GridLayout
-            for title in self.forums_data.keys():
-                label = Label(text=title, size_hint_y=None, color=(0, 0, 0, 1), height=dp(50),
-                            text_size=(self.width - 20, None), size=(self.width, dp(50)),
-                            padding=('10dp', '10dp'), halign='center', valign='middle')
-                label.bind(on_touch_up=lambda instance, touch, title=title: self.open_comment_popup(title) if instance.collide_point(*touch.pos) else None)
+                    # Request to get the id of the messages
+                    message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}', headers=AppState.header)
+                    if message_response.status_code == 200 or message_response.status_code == 201:
+                        message_data = message_response.json()
+                        if message_data:  # Check if message_data is empty or not
+                            AppState.id_message = message_data[0]['id_message']
 
-                layout.add_widget(label)
+                    # Create a new GridLayout for each discussion
+                    forum_layout = GridLayout(cols=1, size_hint_y=None)
 
-            # Ajouter le GridLayout contenant les labels à la ScrollView
-            self.ids.scroll_view.add_widget(layout)
+                    # Add the title of each discussion to the GridLayout
+                    label = Label(text=title, size_hint_y=None, color=(0, 0, 0, 1), height=dp(50),
+                                text_size=(self.width - 20, None), size=(self.width, dp(50)),
+                                padding=('10dp', '10dp'), halign='center', valign='middle')
+                    label.bind(on_touch_up=lambda instance, touch, title=title: self.open_comment_popup(title) if instance.collide_point(*touch.pos) else None)
+
+                    forum_layout.add_widget(label)
+
+                    # Add the GridLayout for each discussion to the main GridLayout
+                    layout.add_widget(forum_layout)
+
+                # Add the main GridLayout to the ScrollView
+                self.ids.scroll_view.add_widget(layout)
+            else:
+                print("Erreur lors de la récupération des discussions:", forum_response.text)
 
     def add_comment_to_forum(self, title, comment):
         if title in self.forums_data:
