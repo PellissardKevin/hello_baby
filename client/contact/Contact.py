@@ -4,6 +4,7 @@ import kivy
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
+from client.login.Login import AppState
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -20,16 +21,12 @@ class Contact(Screen):
         objet = self.ids.objet_input.text
         description = self.ids.description_input.text
 
-        # Configuration de l'email
-        sender_email = 'user-email @gmail.com'  # Votre adresse e-mail
-        sender_password = 'user password'  # Votre mot de passe e-mail
         receiver_email = 'notre email@gmail.com'  # Adresse e-mail du destinataire
         sujet = objet
         corps = description
 
         # Créer un conteneur de message
         msg = MIMEMultipart()
-        msg['From'] = sender_email
         msg['To'] = receiver_email
         msg['Subject'] = sujet
 
@@ -40,12 +37,10 @@ class Contact(Screen):
         serveur = smtplib.SMTP('smtp.gmail.com', 587)
         serveur.starttls()
 
-        # Se connecter au serveur SMTP
-        serveur.login(sender_email, sender_password)
 
         # Envoyer l'email
         texte = msg.as_string()
-        serveur.sendmail(sender_email, receiver_email, texte)
+        serveur.sendmail(receiver_email, texte)
 
         # Fermer la connexion au serveur SMTP
         serveur.quit()

@@ -28,6 +28,13 @@ class Forums(Screen):
     def __init__(self, **kwargs):
         super(Forums, self).__init__(**kwargs)
         self.popups = []
+        """self.update_interval = 30  # Définir l'intervalle de mise à jour en secondes
+        Clock.schedule_interval(self.update_data_from_server, self.update_interval)"""
+
+    """def update_data_from_server(self, title):
+        # Cette fonction sera appelée à intervalles réguliers pour mettre à jour les données depuis le serveur
+        # Mettez à jour les discussions et les messages depuis le serveur
+        self.update_forum(title)"""
 
     def create_forum(self, title, message, user_id):
         # Appel de l'API pour créer la discussion
@@ -37,10 +44,18 @@ class Forums(Screen):
         # Vérifier la réponse
         if response.status_code == 201 or response.status_code == 200:
             print("Discussion créée avec succès!")
+            forum_data = response.json()
+            forum_id = forum_data['id_forums']  # Récupérer l'ID du forum créé
 
-            url = 'http://127.0.0.1:8000/message/'
-            data = {'id_forums': AppState.id_forum, 'id_user': user_id, 'text_message': message}
-            response = requests.post(url, data=data)
+            # Maintenant, envoyons le message à la base de données
+            message_url = f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}'
+            message_data = {'id_forum': forum_id, 'id_user': user_id, 'text_message': message}
+            message_response = requests.post(message_url, data=message_data)
+
+            if message_response.status_code == 201 or message_response.status_code == 200:
+                print("Message ajouté avec succès!")
+            else:
+                print("Erreur lors de l'ajout du message:", message_response.text)
 
             # Ajouter la discussion aux données locales
             self.forums_data[title] = message
@@ -59,10 +74,11 @@ class Forums(Screen):
             if forum_data:
                 AppState.id_forum = forum_data[0]['id_forums']
                 # Request pour récupérer l'id des messages
-                message_response = requests.get(f'http://127.0.0.1:8000/forum/?id_forums={AppState.id_forum}')
+                message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}')
                 if message_response.status_code == 200 or message_response.status_code == 201:
                     message_data = message_response.json()
-                    AppState.id_message = message_data[0]['id_message']
+                    if message_data:  # Vérification si message_data est vide ou non
+                        AppState.id_message = message_data[0]['id_message']
 
             # Créer un nouvel GridLayout pour contenir les labels des discussions
             layout = GridLayout(cols=1, size_hint_y=None)
@@ -130,9 +146,9 @@ class Forums(Screen):
             content.add_widget(input_layout)  # Ajout de l'entrée de texte et du bouton au GridLayout
 
             # Vérifier si l'utilisateur est l'auteur du forum pour afficher le bouton de suppression
-            user_id = 1  # Remplacez ceci par l'ID de l'utilisateur actuellement connecté
-            forum_id = 1  # Remplacez ceci par l'ID du forum actuellement ouvert
-            self.check_and_add_delete_button(content, user_id, forum_id)
+            user_id = AppState.user_id
+            forum_id = AppState.id_forum
+            self.check_and_add_delete_button(content, forum_id)
 
             # Réajuster la taille du Popup en fonction de la taille du contenu
             popup_width = min(self.width, sp(400))
@@ -146,26 +162,32 @@ class Forums(Screen):
         else:
             print(f"Le titre '{title}' n'est pas trouvé dans la liste des titres.")
 
-    def check_and_add_delete_button(self, content, user_id, forum_id):
+    def check_and_add_delete_button(self, content, forum_id):
         # Vérifier si l'utilisateur est l'auteur du forum pour afficher le bouton de suppression
         url = f'http://127.0.0.1:8000/forum/{forum_id}/'
         response = requests.get(url)
-        if response.status_code == 200:
-            forum_author_id = response.json().get('author_id')
-            if forum_author_id == user_id:
-                content.add_widget(Button(text='Supprimer', size_hint=(None, None), size=(100, sp(40)),
-                                          on_press=lambda instance: self.delete_forum(forum_id)))
+        if response.status_code == 200 or response.status_code == 201:
+            forum_data = response.json()
+            forum_author_id = forum_data.get('user_id')
+
+            print("Forum author ID:", forum_author_id)
+            print("Current user ID:", AppState.user_id)
+
+            if forum_author_id == AppState.user_id:
+                delete_button = Button(text='Supprimer', size_hint=(None, None), size=(100, sp(40)))
+                delete_button.bind(on_press=lambda instance: self.delete_forum(AppState.id_forum))
+                content.add_widget(delete_button)
         else:
             print("Erreur lors de la vérification de l'auteur du forum:", response.text)
 
-    def delete_forum(self, title):
-        url = f'http://127.0.0.1:8000/forum/{title}/'
+    def delete_forum(self):
+        url = f'http://127.0.0.1:8000/forum/{AppState.id_forum}/'
         response = requests.delete(url)
         if response.status_code == 204:
             print("Discussion supprimée avec succès!")
             # Supprimer la discussion des données locales
             for title, data in self.forums_data.items():
-                if data.get('id') == forum_id:
+                if data.get('id') == AppState.id_forum:
                     del self.forums_data[title]
                     break
             self.update_forum()

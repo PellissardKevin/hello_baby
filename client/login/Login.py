@@ -17,6 +17,7 @@ class AppState:
     id_message = None
     baby_id = None
 
+
 class Login(Screen):
     def authenticate(self, email, password):
         url = "http://127.0.0.1:8000/auth/login/"
