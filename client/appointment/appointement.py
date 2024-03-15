@@ -97,10 +97,11 @@ class Appointement(Screen):
             auth_url = flow.authorization_url[0]
 
             # Open the authorization URL automatically in the default browser
-            webbrowser.open_new(auth_url)
+            webbrowser.open(auth_url)
 
-            # Ouvrir le lien dans un navigateur spécifique (par exemple, Google Chrome)
-            webbrowser.get('google-chrome').open(auth_url)
+    def url_doctolib(self):
+        webbrowser.open("https://www.doctolib.fr/")
+
 
 class appointementfile(App):
     def build(self):
