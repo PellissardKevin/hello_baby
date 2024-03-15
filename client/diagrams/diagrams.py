@@ -39,7 +39,7 @@ class Diagrams(Screen):
     def on_enter(self):
         self.update_graph()
 
-    def update_graph(self, dt):
+    def update_graph(self, dt=None):
         try:
             response = requests.get(f'http://127.0.0.1:8000/biberon/?id_baby={AppState.baby_id}', headers=AppState.header)
             if response.status_code == 200 or response.status_code == 201:
