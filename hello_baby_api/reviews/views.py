@@ -23,6 +23,8 @@ class ImageViewSet(FlexFieldsModelViewSet):
 class BabyViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = BabySerializer
     filterset_fields = ('id_user', 'firstname', )
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         queryset = baby.objects.all()
         return queryset
@@ -43,7 +45,7 @@ class ForumViewSet(FlexFieldsMixin, ModelViewSet):
 
 class MessageViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = MessageSerializer
-    filterset_fields = ('id_user','id_forum',)
+    filterset_fields = ('id_user','id_forums',)
     def get_queryset(self):
         queryset = message.objects.all()
         return queryset

@@ -48,6 +48,10 @@ class Chatbot(Screen):
         self.ids.chatbot_response.text = str(completion.choices[0].message
                                              .content)
 
+    def clear_input(self):
+        # Accéder à l'objet TextInput par son ID et effacer son contenu
+        self.ids.user_input.text = ""
+
 class chatbotfile(App):
     def build(self):
         return Chatbot()

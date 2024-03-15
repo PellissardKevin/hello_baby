@@ -101,7 +101,9 @@
                 background_color: 'blue'
                 height: dp(50)
                 margin: 20
+                multiline: True
                 on_press: root.send_message(user_input.text)
+                on_release: root.clear_input()
 
         BoxLayout:
             orientation: 'vertical'

@@ -65,11 +65,13 @@
                     texture: Gradient.vertical(get_color_from_hex("80FF80"), get_color_from_hex("C6FFC6"))
 
     BoxLayout:
+        graph_layout: graph_layout
+        id: graph_layout
         orientation: 'vertical'
+        spacing: '5dp'
         size_hint_y: None
         height: dp(50)
-        on_pre_enter: root.update_graph()
-        
+
     BoxLayout:
         orientation: 'vertical'
         size_hint_y: None
