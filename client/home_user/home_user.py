@@ -33,6 +33,7 @@ class Home_user(Screen):
         try:
             # Make GET request to the endpoint
             response = requests.get(endpoint_url, headers=AppState.headers)
+            print(response)
             response_data = response.json()
             # Create a dynamic list based on the user ID
             if response_data:

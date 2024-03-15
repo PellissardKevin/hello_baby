@@ -123,7 +123,6 @@ class Forums(Screen):
 
     def open_comment_popup(self, title, *args):
         content = BoxLayout(orientation='vertical', padding=(5, 5, 5, 5), spacing=5)
-
         if title in self.forums_data:
             message = self.forums_data[title]
             text_height = len(message.split('\n')) * sp(20)  # Utilisation de sp() pour la hauteur du texte
@@ -220,8 +219,9 @@ class Forums(Screen):
 
 class forumsfile(App):
     def build(self):
-        return Forums()
-
+        forums_screen = Forums()
+        forums_screen.update_forum()  # Appel pour afficher les forums existants
+        return forums_screen
 
 if __name__ == '__main__':
     forumsfile().run()
