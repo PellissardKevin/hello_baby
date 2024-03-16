@@ -98,10 +98,16 @@
             Button:
                 text: "Envoyer"
                 size_hint_y: None
-                background_color: 'blue'
                 height: dp(50)
                 margin: 20
                 multiline: True
+                background_color: "0000000"
+                canvas.before:
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        texture: Gradient.vertical(get_color_from_hex("0080C0"), get_color_from_hex("28B9FF"))
+                        radius: [15, 15, 15, 15]
                 on_press: root.send_message(user_input.text)
                 on_release: root.clear_input()
 

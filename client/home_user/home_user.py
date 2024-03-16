@@ -15,9 +15,23 @@ Window.size = (430, 932)
 kivy.require('2.0.0')
 
 class Home_user(Screen):
+    user_firstname = ""
+
     def __init__(self, **kwargs):
         super(Home_user, self).__init__(**kwargs)
         self.dropdown = DropDown()
+        self.fetch_user_firstname()
+
+    def fetch_user_firstname(self):
+        try:
+            response = requests.get(f'http://127.0.0.1:8000/user/?id_user={AppState.user_id}', headers=AppState.header)
+            response.raise_for_status()  # Lève une exception si le statut de la réponse est une erreur HTTP
+            user_data = response.json()
+            self.user_firstname = user_data[0].get('firstname', 'Unknown')
+            self.ids.user_button.text = self.user_firstname
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching user firstname: {e}")
+            self.user_firstname = 'Unknown'
 
     def fetch_data(self):
         # Clear existing widgets in dropdown
@@ -72,6 +86,7 @@ class userhome(App):
         sm.add_widget(Home_user(name='home_user'))
         sm.add_widget(Home_baby(name='babyhome'))
         return sm
+
 
 if __name__ == '__main__':
     userhome().run()

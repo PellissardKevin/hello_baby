@@ -115,7 +115,13 @@
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            background_color: 'blue'
+            background_color: "0000000"
+            canvas.before:
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    texture: Gradient.vertical(get_color_from_hex("0080C0"), get_color_from_hex("28B9FF"))
+                    radius: [15, 15, 15, 15]
             on_press:
                 root.upgrade_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
 
@@ -125,7 +131,13 @@
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            background_color: 'red'
+            background_color: "0000000"
+            canvas.before:
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    texture: Gradient.vertical(get_color_from_hex("EA003A"), get_color_from_hex("FF6C92"))
+                    radius: [15, 15, 15, 15]
             on_press:
                 root.delete_baby(root.ids.firstname.text, root.ids.birthday.text, root.ids.lastname.text, root.ids.size_baby.text, root.ids.weight.text)
                 root.manager.current = "home_user"

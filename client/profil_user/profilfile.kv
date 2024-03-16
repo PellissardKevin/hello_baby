@@ -138,7 +138,13 @@
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            background_color: 'blue'
+            background_color: "0000000"
+            canvas.before:
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    texture: Gradient.vertical(get_color_from_hex("0080C0"), get_color_from_hex("28B9FF"))
+                    radius: [15, 15, 15, 15]
             on_press: root.upgrade()
 
         Button:
@@ -147,7 +153,13 @@
             size_hint: None, None
             size: 200, 50
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            background_color: 'red'
+            background_color: "0000000"
+            canvas.before:
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    texture: Gradient.vertical(get_color_from_hex("EA003A"), get_color_from_hex("FF6C92"))
+                    radius: [15, 15, 15, 15]
             on_press:
                 root.delete(root.ids.firstname.text, root.ids.email.text, root.ids.password.text, root.ids.lastname.text, root.ids.birthday.text, root.ids.weight.text)
                 root.deletePregnancie(root.ids.email.text, root.ids.pregnancie_date.text)
