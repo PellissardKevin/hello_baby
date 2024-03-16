@@ -24,7 +24,7 @@ class Home_user(Screen):
         self.dropdown.clear_widgets()
 
         # Ajoutez du contenu au menu déroulant
-        btn = Button(text='Profil', size_hint_y=None, height=20, width=500)
+        btn = Button(text='Profil', size_hint_y=None, height=20, width=700)
         btn.bind(on_release=lambda btn: self.on_dropdown_select("profil_user"))
         self.dropdown.add_widget(btn)
 
@@ -32,21 +32,20 @@ class Home_user(Screen):
         endpoint_url = f'http://127.0.0.1:8000/baby/?id_user={AppState.user_id}'
         try:
             # Make GET request to the endpoint
-            response = requests.get(endpoint_url, headers=AppState.headers)
-            print(response)
+            response = requests.get(endpoint_url, headers=AppState.header)
             response_data = response.json()
             # Create a dynamic list based on the user ID
             if response_data:
                 for baby in response_data:
                     # Ajoutez du contenu au menu déroulant
                     name_baby = baby.get('firstname', 'Unknown')
-                    btn = Button(text=f'{name_baby}', size_hint_y=None, height=20, width=500)
+                    btn = Button(text=f'{name_baby}', size_hint_y=None, height=20, width=700)
                     btn.bind(on_release=lambda btn, name=name_baby: self.on_dropdown_select(name))
                     self.dropdown.add_widget(btn)
         except Exception as e:
             self.add_widget(Label(text=f"Error: {e}"))
 
-        btnlog = Button(text='Logout', size_hint_y=None, height=20, width=500)
+        btnlog = Button(text='Logout', size_hint_y=None, height=20, width=700)
         btnlog.bind(on_release=lambda btn: self.on_dropdown_select("logout"))
         self.dropdown.add_widget(btnlog)
 
@@ -58,7 +57,7 @@ class Home_user(Screen):
             response = requests.post('http://127.0.0.1:8000/auth/logout/')
             self.manager.current = "login"
         else:
-            baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.headers).json()
+            baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.header).json()
             AppState.baby_id = baby[0]['id_baby']
             self.manager.current = "babyhome"
 
