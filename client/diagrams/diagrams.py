@@ -58,8 +58,30 @@ class Diagrams(Screen):
 
                 self.plotly_widget.update_plot(x_values, y_values)
 
+                quantity_per_day = self.calculate_quantity_today(data)
+                self.ids.quantity_on_day.text = f"Quantité bus aujourd'hui : {quantity_per_day} ml"
+
         except Exception as e:
             print("Error fetching data:", e)
+
+    def calculate_quantity_today(self, data):
+        # Initialiser la quantité totale du jour
+        total_quantity_today = 0
+
+        # Obtenir la date d'aujourd'hui
+        today = datetime.now().date()
+
+        # Parcourir les données et ajouter les quantités pour aujourd'hui seulement
+        for entry in data:
+            # Extraire la date du biberon et la quantité
+            date_biberon = datetime.strptime(entry['date_biberon'], '%Y-%m-%dT%H:%M:%SZ').date()
+            quantity = float(entry['quantity'])
+
+            # Vérifier si l'entrée est d'aujourd'hui
+            if date_biberon == today:
+                total_quantity_today += quantity
+
+        return total_quantity_today
 
     def get_data_from_response(self, data):
         x_values = []
