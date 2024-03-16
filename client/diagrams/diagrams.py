@@ -16,6 +16,10 @@ from PIL import Image as PILImage
 import plotly.graph_objects as go
 from kivy.uix.image import Image
 from client.login.Login import AppState
+from kivy.uix.popup import Popup
+from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
+from kivy.metrics import dp
 
 Window.size = (430, 932)
 
@@ -30,8 +34,9 @@ class Diagrams(Screen):
         # Create the Plotly widget
         self.plotly_widget = PlotlyWidget()
         self.layout.add_widget(self.plotly_widget)
-
         self.add_widget(self.layout)
+
+        self.popup = None
 
         # Call the method to update the plot
         self.on_enter()
@@ -64,6 +69,42 @@ class Diagrams(Screen):
             x_values.append(date_biberon)
             y_values.append(float(entry['quantity']))
         return x_values, y_values
+
+    def enter_data_bib(self):
+        content = BoxLayout(orientation='vertical')
+        quantity_input = TextInput(hint_text='Quantité en ml', multiline=True)
+        add_button = Button(text='Ajouter', size_hint_y=None, height=dp(50))
+        add_button.bind(on_release=lambda btn: self.add_quantity(quantity_input.text))
+        content.add_widget(quantity_input)
+        content.add_widget(add_button)
+
+        self.popup = Popup(title='Ajouter un biberon', content=content, size_hint=(None, None), size=(300, 200))
+        self.popup.open()
+
+    def add_quantity(self, quantity):
+        try:
+            quantity = float(quantity)
+            if quantity <= 0:
+                print("Veuillez entrer une quantité positive.")
+                return
+
+            data = {
+                "id_baby": AppState.baby_id,
+                "quantity": quantity,
+                "date_biberon": datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
+            }
+
+            response = requests.post('http://127.0.0.1:8000/biberon/', headers=AppState.header, data=data)
+            if response.status_code == 201 or response.status_code == 200:
+                print("Biberon ajouté avec succès!")
+                self.update_graph()
+            else:
+                print("Erreur lors de l'ajout du biberon:", response.status_code)
+            if self.popup:
+                self.popup.dismiss()
+                self.popup = None
+        except ValueError:
+            print("Veuillez entrer une quantité valide.")
 
 
 class PlotlyWidget(BoxLayout):
