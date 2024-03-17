@@ -18,7 +18,7 @@ Window.size = (430, 932)
 kivy.require('2.0.0')
 
 class Home_baby(Screen):
-    baby_firstname = ''
+    baby_firstname = ""
 
     def __init__(self, **kwargs):
         super(Home_baby, self).__init__(**kwargs)
@@ -29,25 +29,31 @@ class Home_baby(Screen):
 
     def fetch_baby_firstname(self):
         try:
-            UrlRequest(f'http://127.0.0.1:8000/baby/?id_baby={AppState.baby_id}', self.set_baby_firstname)
+            response = requests.get(f'http://127.0.0.1:8000/baby/?id_baby={AppState.baby_id}', headers=AppState.header)
+            response_data = response.json()
+            self.set_baby_firstname(None, response_data)
         except Exception as e:
             print(f"Error fetching baby firstname: {e}")
             self.baby_firstname = 'Unknown'
 
     def set_baby_firstname(self, req, result):
         try:
-            self.baby_firstname = result[0]['firstname']
-            self.ids.baby_button.text = self.baby_firstname
+            new_firstname = result[0]['firstname']
+            if new_firstname != self.baby_firstname:  # Vérifier si le nom du bébé a changé
+                self.baby_firstname = new_firstname
+                self.ids.baby_button.text = self.baby_firstname
+                self.fetch_baby_firstname()  # Appel pour mettre à jour le nom du bébé uniquement si nécessaire
         except Exception as e:
             print(f"Error setting baby firstname: {e}")
             self.baby_firstname = 'Unknown'
+
 
     def fetch_babies(self):
         # Clear existing widgets in dropdown
         self.dropdown.clear_widgets()
         # Ajoutez du contenu au menu déroulant
         btn = Button(text='Profil', size_hint_y=None, height=20, width=700)
-        btn.bind(on_release=lambda btn: self.on_dropdown_select("profil_user"))
+        btn.bind(on_release=lambda btn: self.on_dropdown_select("profil_baby"))
         self.dropdown.add_widget(btn)
 
         # Django REST endpoint URL
@@ -74,15 +80,15 @@ class Home_baby(Screen):
 
     def on_dropdown_select(self, target):
         # Fonction appelée lorsque vous sélectionnez un bouton dans le menu déroulant
-        if target == "profil_user":
-            self.manager.current = "profil_user"
+        if target == "profil_baby":
+            self.manager.current = "babyprofil"
         elif target == "logout":
-            response = requests.post('http://127.0.0.1:8000/auth/logout/')
+            response = requests.post('http://127.0.0.1:8000/auth/logout/', headers=AppState.header)
             self.manager.current = "login"
         else:
             baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.header).json()
             AppState.baby_id = baby[0]['id_baby']
-            self.manager.current = "babyprofil"
+            self.manager.current = "babyhome"
 
     def open_dropdown(self, widget):
         # Ouvre le menu déroulant lorsque le bouton est relâché

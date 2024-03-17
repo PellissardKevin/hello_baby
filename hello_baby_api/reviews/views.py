@@ -22,7 +22,7 @@ class ImageViewSet(FlexFieldsModelViewSet):
 
 class BabyViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = BabySerializer
-    filterset_fields = ('id_user', 'firstname', )
+    filterset_fields = ('id_user', 'firstname', 'id_baby')
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

@@ -89,7 +89,7 @@ class Home_user(Screen):
         self.fetch_data() # Appeler fetch_data lorsque le bouton est pressé
         self.dropdown.open(widget)
 
-    """def update_pregnancy_countdown(self, due_date=None):
+    def update_pregnancy_countdown(self, due_date=None):
         if due_date:
             pregnancy_countdown = due_date - datetime.now()
             self.ids.pregnancy_info.text = f"Date d'accouchement : {due_date.strftime('%d-%m-%Y')}\n" \
@@ -99,7 +99,7 @@ class Home_user(Screen):
             self.ids.pregnancy_info.text = "Date d'accouchement : Inconnue\n" \
                                         "Semaines de grossesse : Inconnue\n" \
                                         "Jours restants : Inconnu"
-                                        """
+                                        
 
 class userhome(App):
     def build(self):
