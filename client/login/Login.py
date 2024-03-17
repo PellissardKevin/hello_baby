@@ -4,6 +4,11 @@ import kivy
 from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
+from kivy.uix.popup import Popup
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 import requests
 
 Window.size = (430, 932)
@@ -17,6 +22,62 @@ class AppState:
     id_message = None
     baby_id = None
     header = None
+
+
+class PasswordResetPopup(Popup):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.title = "Réinitialisation du mot de passe"
+        self.size_hint = (None, None)
+        self.size = (400, 300)
+
+        layout = GridLayout(cols=2)
+        layout.add_widget(Label(text="Prénom :"))
+        self.firstname_input = TextInput(multiline=False)
+        layout.add_widget(self.firstname_input)
+
+        layout.add_widget(Label(text="Email :"))
+        self.email_input = TextInput(multiline=False)
+        layout.add_widget(self.email_input)
+
+        layout.add_widget(Label(text="Nouveau mot de passe :"))
+        self.new_password_input = TextInput(multiline=False, password=True)
+        layout.add_widget(self.new_password_input)
+
+        layout.add_widget(Label(text="Confirmer le mot de passe :"))
+        self.confirm_password_input = TextInput(multiline=False, password=True)
+        layout.add_widget(self.confirm_password_input)
+
+        self.error_label = Label(text="", color=(1, 0, 0, 1))
+        layout.add_widget(self.error_label)
+
+        layout.add_widget(Button(text="Réinitialiser", on_press=self.reset_password))
+
+        self.content = layout
+
+    def reset_password(self, instance):
+        firstname = self.firstname_input.text
+        email = self.email_input.text
+        new_password = self.new_password_input.text
+        confirm_password = self.confirm_password_input.text
+
+        if not firstname or not email or not new_password or not confirm_password:
+            self.error_label.text = "Veuillez remplir tous les champs."
+            return
+
+        if new_password != confirm_password:
+            self.error_label.text = "Les mots de passe ne correspondent pas."
+            return
+
+        data = {"firstname": firstname, "email": email, "new_password": new_password}
+        response = requests.post("http://127.0.0.1:8000/auth/reset_password/", data=data)
+
+        if response.status_code == 200:
+            self.error_label.text = "Mot de passe réinitialisé avec succès."
+        else:
+            self.error_label.text = "Erreur lors de la réinitialisation du mot de passe."
+
+        self.dismiss()
 
 
 class Login(Screen):
@@ -44,6 +105,11 @@ class Login(Screen):
         # Accéder à l'objet TextInput par son ID et effacer son contenu
         self.ids.email.text = ""
         self.ids.password.text = ""
+
+    def password_forgotten(self):
+        popup = PasswordResetPopup()
+        popup.open()
+
 
 class loginfile(App):
     def build(self):

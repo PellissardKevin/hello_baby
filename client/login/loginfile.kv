@@ -71,13 +71,16 @@
                 on_press: root.authenticate(root.ids.email.text, root.ids.password.text)
                 on_release: root.clear_input()
 
-            Button:
-                text:'Mot de passe oublié ?'
-                height: 20
-                font_size: 12
-                color: 0,0,0
-                background_color: '0000000'
-                on_press: root.password_forgotten()
+            BoxLayout:
+                size_hint: 1, None
+                height: '30dp'
+                Button:
+                    text:'Mot de passe oublié ?'
+                    height: 20
+                    font_size: 12
+                    color: 0, 0, 0
+                    background_color: '0000000'
+                    on_press: root.password_forgotten()
 
         BoxLayout:
             orientation:'horizontal'
