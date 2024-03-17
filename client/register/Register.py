@@ -36,7 +36,6 @@ class Register(Screen):
             "email": email,
             "password": password,
             "lastname": lastname,
-            "birthday": birthday,
             "weight": weight,
         }
         response_reg = requests.post("http://127.0.0.1:8000/auth/register/", data={
@@ -46,6 +45,10 @@ class Register(Screen):
             "password": password
         })
 
+        # Register the user if a birthday is provided
+        if birthday:
+            data['birthday'] = datetime.strptime(birthday, '%d/%m/%Y').strftime('%Y-%m-%d')
+
         # Generate a salt
         salt = bcrypt.gensalt()
         # converting password to array of bytes
@@ -54,7 +57,7 @@ class Register(Screen):
         hashed_password = bcrypt.hashpw(bytes, salt)
 
         data['password'] = hashed_password
-        data['birthday'] = datetime.strptime(birthday, '%d/%m/%Y').strftime('%Y-%m-%d')
+
         # send request to the endpoint
         response = requests.post(url, data=data)
         if ((response.status_code == 201 or response.status_code == 200 ) and
@@ -75,7 +78,7 @@ class Register(Screen):
             "id_user": ''
         }
         # get the data of user
-        user = requests.get("http://127.0.0.1:8000/user/?expand=email&email=%s" % email).json()
+        user = requests.get(f"http://127.0.0.1:8000/user/?email={email}").json()
 
         # save and format date
         datetime_obj = datetime.strptime(pregnancie_date, '%d/%m/%Y')
@@ -86,7 +89,7 @@ class Register(Screen):
         data['amenorhea_date'] = amenorhea_format.strftime('%Y-%m-%d')
 
         # send request to the endpoint
-        response = requests.post(url_preg, data=data, headers=AppState.header)
+        response = requests.post(url_preg, data=data)
         if response.status_code == 201 or response.status_code == 200:
             print("Enregistrement Grossesse réussie!")
         else:

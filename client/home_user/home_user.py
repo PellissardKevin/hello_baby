@@ -24,10 +24,10 @@ class Home_user(Screen):
 
     def fetch_user_firstname(self):
         try:
-            response = requests.get(f'http://127.0.0.1:8000/user/?id_user={AppState.user_id}', headers=AppState.header)
+            response = requests.get(f'http://127.0.0.1:8000/user/?id_user={AppState.user_id}')
             response.raise_for_status()  # Lève une exception si le statut de la réponse est une erreur HTTP
             user_data = response.json()
-            self.user_firstname = user_data[0].get('firstname', 'Unknown')
+            self.user_firstname = user_data[0]['firstname']
             self.ids.user_button.text = self.user_firstname
         except requests.exceptions.RequestException as e:
             print(f"Error fetching user firstname: {e}")

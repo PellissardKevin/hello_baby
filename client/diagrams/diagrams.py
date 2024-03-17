@@ -38,9 +38,6 @@ class Diagrams(Screen):
 
         self.popup = None
 
-        # Call the method to update the plot
-        self.on_enter()
-
     def on_enter(self):
         self.update_graph()
 

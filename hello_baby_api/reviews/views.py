@@ -32,7 +32,6 @@ class BabyViewSet(FlexFieldsMixin, ModelViewSet):
 class PregnancieViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = PregnancieSerializer
     filterset_fields = ('id_user',)
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = pregnancie.objects.all()
