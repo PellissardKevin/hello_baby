@@ -31,12 +31,12 @@ class Home_baby(Screen):
         try:
             response = requests.get(f'http://127.0.0.1:8000/baby/?id_baby={AppState.baby_id}', headers=AppState.header)
             response_data = response.json()
-            self.set_baby_firstname(None, response_data)
+            self.set_baby_firstname(response_data)
         except Exception as e:
             print(f"Error fetching baby firstname: {e}")
             self.baby_firstname = 'Unknown'
 
-    def set_baby_firstname(self, req, result):
+    def set_baby_firstname(self, result):
         try:
             new_firstname = result[0]['firstname']
             if new_firstname != self.baby_firstname:  # Vérifier si le nom du bébé a changé
@@ -88,6 +88,7 @@ class Home_baby(Screen):
         else:
             baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.header).json()
             AppState.baby_id = baby[0]['id_baby']
+            self.fetch_baby_firstname()
             self.manager.current = "babyhome"
 
     def open_dropdown(self, widget):

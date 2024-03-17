@@ -14,13 +14,13 @@ router.register(r'pregnancie', PregnancieViewSet, basename='Pregnancie')
 router.register(r'forum', ForumViewSet, basename='Forum')
 router.register(r'message', MessageViewSet, basename='Message')
 router.register(r'biberon', BiberonViewSet, basename='Biberon')
-router.register(r'userdelete', UserModelDeleteAPIView, basename='user-model-delete')
-router.register(r'babydelete', BabyModelDeleteAPIView, basename='baby-model-delete')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('auth.urls')),
+    path('userdelete/<pk>', UserModelDeleteAPIView.as_view({'delete': 'destroy'}), name='user-delete'),
+    path('babydelete/<pk>', BabyModelDeleteAPIView.as_view({'delete': 'destroy'}), name='baby-delete'),
     path('', include(router.urls)),
 ]
 

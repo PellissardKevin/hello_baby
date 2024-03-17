@@ -77,7 +77,7 @@ class UserModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
 
 class BabyModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
     queryset = baby.objects.all()
-    filterset_fields = ('id_user',)
+    filterset_fields = ('id_user', 'id_baby')
     serializer_class = BabySerializer
     permission_classes = [IsAuthenticated]
 
