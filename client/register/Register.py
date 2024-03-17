@@ -6,6 +6,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from datetime import datetime, timedelta
 from client.login.Login import AppState
+from client.home_user.home_user import Home_user
 from date_picker_widget import CalendarPopup
 import requests
 import bcrypt
@@ -94,6 +95,12 @@ class Register(Screen):
             print("Enregistrement Grossesse réussie!")
         else:
             print("Enregistrement Grossesse échouée!")
+
+        """# Calcul de la date d'accouchement
+        pregnancy_start_date = datetime.strptime(pregnancie_date, '%d/%m/%Y')
+        due_date = pregnancy_start_date + timedelta(weeks=40)
+
+        Home_user.update_pregnancy_countdown(due_date)"""
 
     def clear_input(self):
         # Accéder à l'objet TextInput par son ID et effacer son contenu

@@ -9,6 +9,7 @@ from client.login.Login import AppState
 from client.profil_user.profil import Profil
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.network.urlrequest import UrlRequest
 import requests
 
 
@@ -17,9 +18,29 @@ Window.size = (430, 932)
 kivy.require('2.0.0')
 
 class Home_baby(Screen):
+    baby_firstname = ''
+
     def __init__(self, **kwargs):
         super(Home_baby, self).__init__(**kwargs)
         self.dropdown = DropDown()
+
+    def on_enter(self):
+        self.fetch_baby_firstname()
+
+    def fetch_baby_firstname(self):
+        try:
+            UrlRequest(f'http://127.0.0.1:8000/baby/?id_baby={AppState.baby_id}', self.set_baby_firstname)
+        except Exception as e:
+            print(f"Error fetching baby firstname: {e}")
+            self.baby_firstname = 'Unknown'
+
+    def set_baby_firstname(self, req, result):
+        try:
+            self.baby_firstname = result[0]['firstname']
+            self.ids.baby_button.text = self.baby_firstname
+        except Exception as e:
+            print(f"Error setting baby firstname: {e}")
+            self.baby_firstname = 'Unknown'
 
     def fetch_babies(self):
         # Clear existing widgets in dropdown
@@ -68,6 +89,8 @@ class Home_baby(Screen):
         self.fetch_babies()  # Appeler fetch_data lorsque le bouton est pressé
         self.dropdown.open(widget)
 
+    def update_pregnancy_countdown(self):
+        pass
 
 
 class babyhome(App):

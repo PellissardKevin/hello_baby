@@ -8,6 +8,8 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
+from datetime import datetime, timedelta
+from kivy.network.urlrequest import UrlRequest
 import requests
 
 Window.size = (430, 932)
@@ -20,17 +22,24 @@ class Home_user(Screen):
     def __init__(self, **kwargs):
         super(Home_user, self).__init__(**kwargs)
         self.dropdown = DropDown()
+
+    def on_enter(self):
         self.fetch_user_firstname()
+        self.update_pregnancy_countdown()
 
     def fetch_user_firstname(self):
         try:
-            response = requests.get(f'http://127.0.0.1:8000/user/?id_user={AppState.user_id}')
-            response.raise_for_status()  # Lève une exception si le statut de la réponse est une erreur HTTP
-            user_data = response.json()
-            self.user_firstname = user_data[0]['firstname']
-            self.ids.user_button.text = self.user_firstname
-        except requests.exceptions.RequestException as e:
+            UrlRequest(f'http://127.0.0.1:8000/user/?id_user={AppState.user_id}', self.set_user_firstname)
+        except Exception as e:
             print(f"Error fetching user firstname: {e}")
+            self.user_firstname = 'Unknown'
+
+    def set_user_firstname(self, req, result):
+        try:
+            self.user_firstname = result[0]['firstname']
+            self.ids.user_button.text = self.user_firstname
+        except Exception as e:
+            print(f"Error setting user firstname: {e}")
             self.user_firstname = 'Unknown'
 
     def fetch_data(self):
@@ -77,8 +86,20 @@ class Home_user(Screen):
 
     def open_dropdown(self, widget):
         # Ouvre le menu déroulant lorsque le bouton est relâché
-        self.fetch_data()  # Appeler fetch_data lorsque le bouton est pressé
+        self.fetch_data() # Appeler fetch_data lorsque le bouton est pressé
         self.dropdown.open(widget)
+
+    """def update_pregnancy_countdown(self, due_date=None):
+        if due_date:
+            pregnancy_countdown = due_date - datetime.now()
+            self.ids.pregnancy_info.text = f"Date d'accouchement : {due_date.strftime('%d-%m-%Y')}\n" \
+                                        f"Semaines de grossesse : {pregnancy_countdown.days // 7}\n" \
+                                        f"Jours restants : {pregnancy_countdown.days % 7}"
+        else:
+            self.ids.pregnancy_info.text = "Date d'accouchement : Inconnue\n" \
+                                        "Semaines de grossesse : Inconnue\n" \
+                                        "Jours restants : Inconnu"
+                                        """
 
 class userhome(App):
     def build(self):
@@ -86,7 +107,6 @@ class userhome(App):
         sm.add_widget(Home_user(name='home_user'))
         sm.add_widget(Home_baby(name='babyhome'))
         return sm
-
 
 if __name__ == '__main__':
     userhome().run()

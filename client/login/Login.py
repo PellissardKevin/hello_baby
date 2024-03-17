@@ -22,6 +22,7 @@ class AppState:
     id_message = None
     baby_id = None
     header = None
+    baby_id = None
 
 
 class PasswordResetPopup(Popup):
