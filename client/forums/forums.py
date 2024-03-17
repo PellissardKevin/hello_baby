@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import kivy
+import json
 import requests
 from kivy.core.window import Window
 from client.login.Login import AppState
@@ -28,6 +29,10 @@ class Forums(Screen):
     def __init__(self, **kwargs):
         super(Forums, self).__init__(**kwargs)
         self.popups = []
+        self.popup = None
+
+    def on_enter(self, *args):
+        self.update_forum_list()
 
     def create_forum(self, title, message, user_id):
         # Appel de l'API pour créer la discussion
@@ -38,10 +43,10 @@ class Forums(Screen):
         if response.status_code == 201 or response.status_code == 200:
             print("Discussion créée avec succès!")
             forum_data = response.json()
-            forum_id = forum_data['id_forums']  # Récupérer l'ID du forum créé
+            AppState.id_forum = forum_id = forum_data['id_forums']  # Récupérer l'ID du forum créé
 
             # Maintenant, envoyons le message à la base de données
-            message_url = f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}'
+            message_url = f'http://127.0.0.1:8000/message/?id_forum={AppState.id_forum}'
             message_data = {'id_forum': forum_id, 'id_user': user_id, 'text_message': message}
             message_response = requests.post(message_url, data=message_data, headers=AppState.header)
 
@@ -56,28 +61,21 @@ class Forums(Screen):
         else:
             print("Erreur lors de la création de la discussion:", response.text)
 
-    def update_forum(self, title):
-        # Clear the previous content in the GridLayout
+    def update_forum(self, dt=None):
+        # Effacer le contenu précédent dans le GridLayout
         self.ids.scroll_view.clear_widgets()
 
         # Request to get all discussions
         forum_response = requests.get('http://127.0.0.1:8000/forum/', headers=AppState.header)
         if forum_response.status_code == 200 or forum_response.status_code == 201:
-            forum_data = forum_response.json()
-            if forum_data:
+            forums_data = forum_response.json()
+            if forums_data:
                 # Create a new GridLayout to hold all forum labels
                 layout = GridLayout(cols=1, size_hint_y=None)
 
-                for forums_item in forum_data:
-                    title = forums_item['title']
-                    AppState.id_forum = forums_item['id_forums']
-
-                    # Request to get the id of the messages
-                    message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forums={AppState.id_forum}', headers=AppState.header)
-                    if message_response.status_code == 200 or message_response.status_code == 201:
-                        message_data = message_response.json()
-                        if message_data:  # Check if message_data is empty or not
-                            AppState.id_message = message_data[0]['id_message']
+                for forum_item in forums_data:
+                    title = forum_item['title']
+                    AppState.id_forum = forum_id = forum_item['id_forum']
 
                     # Create a new GridLayout for each discussion
                     forum_layout = GridLayout(cols=1, size_hint_y=None)
@@ -86,7 +84,7 @@ class Forums(Screen):
                     label = Label(text=title, size_hint_y=None, color=(0, 0, 0, 1), height=dp(50),
                                 text_size=(self.width - 20, None), size=(self.width, dp(50)),
                                 padding=('10dp', '10dp'), halign='center', valign='middle')
-                    label.bind(on_touch_up=lambda instance, touch, title=title: self.open_comment_popup(title) if instance.collide_point(*touch.pos) else None)
+                    label.bind(on_touch_up=lambda instance, touch, forum_id=forum_id, title=title: self.open_comment_popup(forum_id, title) if instance.collide_point(*touch.pos) else None)
 
                     forum_layout.add_widget(label)
 
@@ -96,11 +94,33 @@ class Forums(Screen):
                 # Add the main GridLayout to the ScrollView
                 self.ids.scroll_view.add_widget(layout)
             else:
-                print("Erreur lors de la récupération des discussions:", forum_response.text)
+                print("Aucun forum trouvé.")
+        else:
+            print("Erreur lors de la récupération des discussions:", forum_response.text)
 
     def add_comment_to_forum(self, title, comment):
+        # Vérifier si le titre de la discussion est présent dans les données locales
         if title in self.forums_data:
-            self.forums_data[title] += f"\nCommentaire: {comment}"
+            # Ajouter le commentaire à la discussion
+            self.forums_data[title] += f"\n{comment}"
+
+            # Construire l'URL pour l'endpoint d'ajout de message
+            message_url = f'http://127.0.0.1:8000/message/?id_forum={AppState.id_forum}'
+
+            # Données à envoyer dans la requête POST
+            message_data = {'id_forum': AppState.id_forum, 'id_user': AppState.user_id, 'text_message': comment}
+
+            # Envoyer la requête POST pour ajouter le message
+            message_response = requests.post(message_url, data=message_data, headers=AppState.header)
+
+            # Vérifier la réponse
+            if message_response.status_code == 201 or message_response.status_code == 200:
+                print("Message ajouté avec succès!")
+                self.popup.dismiss()
+            else:
+                print("Erreur lors de l'ajout du message:", message_response.text)
+        else:
+            print(f"La discussion '{title}' n'existe pas dans les données locales.")
 
     def open_popup(self):
         content = BoxLayout(orientation='vertical')
@@ -122,10 +142,17 @@ class Forums(Screen):
             self.popup.dismiss()
 
     def open_comment_popup(self, title, *args):
+        forum_request = requests.get(f'http://127.0.0.1:8000/forum/?title={title}', headers=AppState.header)
+        if forum_request.status_code == 200 or forum_request.status_code == 201:
+            forum_data = forum_request.json()
+            AppState.id_forum = forum_id = forum_data[0]['id_forums']
         content = BoxLayout(orientation='vertical', padding=(5, 5, 5, 5), spacing=5)
         if title in self.forums_data:
             message = self.forums_data[title]
-            text_height = len(message.split('\n')) * sp(20)  # Utilisation de sp() pour la hauteur du texte
+            if not isinstance(message, str):  # Vérifier si message n'est pas déjà une chaîne de caractères
+                message = str(message)  # Convertir message en chaîne de caractères
+
+            text_height = len(message.splitlines()) * sp(20)  # Utilisation de sp() pour la hauteur du texte
 
             # Créer un layout pour le message
             message_layout = BoxLayout(orientation='vertical', size_hint_y=None, height=text_height)
@@ -144,29 +171,30 @@ class Forums(Screen):
             input_comment = TextInput(hint_text='Votre commentaire')
             input_layout.add_widget(input_comment)
             input_layout.add_widget(Button(text='Ajouter', size_hint=(None, None), size=(100, sp(40)),
-                                        on_press=lambda instance: self.add_comment_to_forum(title, input_comment.text)))
+                                            on_press=lambda instance: self.add_comment_to_forum(title, input_comment.text)))
             content.add_widget(input_layout)  # Ajout de l'entrée de texte et du bouton au GridLayout
 
             # Vérifier si l'utilisateur est l'auteur du forum pour afficher le bouton de suppression
             user_id = AppState.user_id
-            forum_id = AppState.id_forum
             self.check_and_add_delete_button(content, forum_id, title)
 
             # Réajuster la taille du Popup en fonction de la taille du contenu
             popup_width = min(self.width, sp(400))
             popup_height = min(text_height + sp(200) + sp(40), self.height)
-            popup = Popup(title=f"{title}", content=content, size_hint=(None, None), size=(popup_width, popup_height))
+            # Stocker la référence au popup
+            self.popup = Popup(title=f"{title}", content=content, size_hint=(None, None), size=(popup_width, popup_height))
 
             # Définir le défilement vers le haut du ScrollView
-            popup.bind(on_open=self.scroll_scrollview_to_top)
+            self.popup.bind(on_open=self.scroll_scrollview_to_top)
 
-            popup.open()
+            self.popup.open()
         else:
             print(f"Le titre '{title}' n'est pas trouvé dans la liste des titres.")
 
     def check_and_add_delete_button(self, content, forum_id, title):
         # Vérifier si l'utilisateur est l'auteur du forum pour afficher le bouton de suppression
         url = f'http://127.0.0.1:8000/forum/{forum_id}/'
+        print(f'Id du forum: {AppState.id_forum}')
         response = requests.get(url, headers=AppState.header)
         if response.status_code == 200 or response.status_code == 201:
             forum_data = response.json()
@@ -188,6 +216,9 @@ class Forums(Screen):
             del self.forums_data[title]
             # Réorganiser l'affichage pour refléter la suppression de la discussion
             self.update_forum_list()
+
+            # Fermer le popup
+            self.popup.dismiss()
         else:
             print("Erreur lors de la suppression de la discussion:", response.text)
 
@@ -198,18 +229,40 @@ class Forums(Screen):
         # Créer un nouvel GridLayout pour contenir les labels des discussions
         layout = GridLayout(cols=1, size_hint_y=None)
 
-        # Parcourir les titres de discussion et les ajouter au GridLayout
-        for title in self.forums_data.keys():
-            label = Label(text=title, size_hint_y=None, color=(0, 0, 0, 1), height=dp(50),
-                        text_size=(self.width - 20, None), size=(self.width, dp(50)),
-                        padding=('10dp', '10dp'), halign='center', valign='middle')
-            label.bind(on_touch_up=lambda instance, touch, title=title: self.open_comment_popup(title) if
-            instance.collide_point(*touch.pos) else None)
+        # Request to get all discussions
+        forum_response = requests.get('http://127.0.0.1:8000/forum/', headers=AppState.header)
+        if forum_response.status_code == 200 or forum_response.status_code == 201:
+            try:
+                forum_data = forum_response.json()
+                self.forums_data = {forum['title']: forum['id_forums'] for forum in forum_data}
+                for title, forum_id in self.forums_data.items():  # Parcourir les titres de discussion
+                    label = Label(text=title, size_hint_y=None, color=(0, 0, 0, 1), height=dp(50),
+                                text_size=(self.width - 20, None), size=(self.width, dp(50)),
+                                padding=('10dp', '10dp'), halign='center', valign='middle')
+                    label.bind(on_touch_up=lambda instance, touch, title=title: self.open_comment_popup(title) if
+                    instance.collide_point(*touch.pos) else None)
 
-            layout.add_widget(label)
+                    # Récupérer les messages associés à la discussion
+                    message_response = requests.get(f'http://127.0.0.1:8000/message/?id_forum={forum_id}', headers=AppState.header)
+                    if message_response.status_code == 200 or message_response.status_code == 201:
+                        message_data = message_response.json()
+                        if message_data:
+                            # Concaténer les messages en une seule chaîne
+                            message_text = '\n'.join([msg['text_message'] for msg in message_data])
+                            self.forums_data[title] = message_text
+                        else:
+                            self.forums_data[title] = "Aucun message pour cette discussion."
 
-        # Ajouter le GridLayout contenant les labels à la ScrollView
-        self.ids.scroll_view.add_widget(layout)
+                    layout.add_widget(label)
+
+                # Ajouter le GridLayout contenant les labels à la ScrollView
+                self.ids.scroll_view.add_widget(layout)
+            except ValueError as e:
+                print("Erreur lors du décodage JSON:", e)
+                print("Contenu brut de la réponse:", forum_response.text)
+        else:
+            print("Erreur lors de la récupération des discussions:", forum_response.text)
+
 
     def scroll_scrollview_to_top(self, instance):
         # Cette fonction sera appelée lorsque le popup sera ouvert

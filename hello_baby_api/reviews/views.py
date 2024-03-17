@@ -48,7 +48,7 @@ class ForumViewSet(FlexFieldsMixin, ModelViewSet):
 
 class MessageViewSet(FlexFieldsMixin, ModelViewSet):
     serializer_class = MessageSerializer
-    filterset_fields = ('id_user','id_forums',)
+    filterset_fields = ('id_user','id_forum',)
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
