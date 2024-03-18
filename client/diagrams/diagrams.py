@@ -10,6 +10,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import plotly.graph_objects as go
+from kivy.graphics.texture import Texture
+from kivy.core.image import Image as CoreImage
+
 from kivy.uix.label import Label
 import io
 from PIL import Image as PILImage
@@ -131,6 +134,8 @@ class PlotlyWidget(BoxLayout):
         super(PlotlyWidget, self).__init__(**kwargs)
         self.orientation = "vertical"
         self.plotly_figure = go.Figure()
+        self.graph_image = Image(allow_stretch=True)
+        self.add_widget(self.graph_image)
 
     def update_plot(self, x_values, y_values):
         # Remove previous traces from the figure
@@ -144,11 +149,16 @@ class PlotlyWidget(BoxLayout):
         self.plotly_figure.write_image(buf, format='png')
         buf.seek(0)
         pil_image = PILImage.open(buf)
-        pil_image.save('plotly_graph.png')  # Save the image temporarily
 
-        # Display the image using Kivy Image widget
-        self.clear_widgets()  # Remove previous image
-        self.add_widget(Image(source='plotly_graph.png', allow_stretch=True))
+
+        # Convert PIL image to texture
+        buf = io.BytesIO()
+        pil_image.save(buf, format='png')
+        buf.seek(0)
+        texture = CoreImage(buf, ext='png').texture
+
+        # Update the source of the Image widget
+        self.graph_image.texture = texture
 
 
 class MyScreenManager(ScreenManager):
