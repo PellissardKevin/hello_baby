@@ -194,7 +194,6 @@ class Forums(Screen):
     def check_and_add_delete_button(self, content, forum_id, title):
         # Vérifier si l'utilisateur est l'auteur du forum pour afficher le bouton de suppression
         url = f'http://127.0.0.1:8000/forum/{forum_id}/'
-        print(f'Id du forum: {AppState.id_forum}')
         response = requests.get(url, headers=AppState.header)
         if response.status_code == 200 or response.status_code == 201:
             forum_data = response.json()

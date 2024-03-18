@@ -47,7 +47,7 @@ class forum(models.Model):
 
 class message(models.Model):
     id_message = models.AutoField(primary_key=True)
-    text_message = models.CharField(max_length=56)
+    text_message = models.CharField(max_length=256)
     id_forum = models.ForeignKey(forum, on_delete=models.CASCADE)
     id_user = models.ForeignKey(user, on_delete=models.CASCADE)
 

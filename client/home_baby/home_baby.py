@@ -85,7 +85,7 @@ class Home_baby(Screen):
         if target == "profil_baby":
             self.manager.current = "babyprofil"
         elif target == "logout":
-            response = requests.post('http://127.0.0.1:8000/auth/logout/', headers=AppState.header)
+            response = requests.post('http://127.0.0.1:8000/auth/logout/', data={"refresh_token": AppState.refresh_token}, headers=AppState.header)
             self.manager.current = "login"
         else:
             baby = requests.get(f'http://127.0.0.1:8000/baby/?firstname={target}', headers=AppState.header).json()
