@@ -84,7 +84,7 @@ class Forums(Screen):
                     label = Label(text=title, size_hint_y=None, color=(0, 0, 0, 1), height=dp(50),
                                 text_size=(self.width - 20, None), size=(self.width, dp(50)),
                                 padding=('10dp', '10dp'), halign='center', valign='middle')
-                    label.bind(on_touch_up=lambda instance, touch, forum_id=forum_id, title=title: self.open_comment_popup(forum_id, title) if instance.collide_point(*touch.pos) else None)
+                    label.bind(on_touch_up=lambda instance, touch, forum_id=forum_id, title=title: self.open_comment_popup(title) if instance.collide_point(*touch.pos) else None)
 
                     forum_layout.add_widget(label)
 
@@ -113,7 +113,7 @@ class Forums(Screen):
             # Envoyer la requête POST pour ajouter le message
             message_response = requests.post(message_url, data=message_data, headers=AppState.header)
 
-            # Vérifier la réponse
+            # Vérifier la réponsea
             if message_response.status_code == 201 or message_response.status_code == 200:
                 print("Message ajouté avec succès!")
                 self.popup.dismiss()
