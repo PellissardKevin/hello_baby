@@ -22,7 +22,6 @@ class AppState:
     id_message = None
     baby_id = None
     header = None
-    baby_id = None
 
 
 class PasswordResetPopup(Popup):
@@ -33,10 +32,6 @@ class PasswordResetPopup(Popup):
         self.size = (400, 300)
 
         layout = GridLayout(cols=2)
-        layout.add_widget(Label(text="Prénom :"))
-        self.firstname_input = TextInput(multiline=False)
-        layout.add_widget(self.firstname_input)
-
         layout.add_widget(Label(text="Email :"))
         self.email_input = TextInput(multiline=False)
         layout.add_widget(self.email_input)
@@ -57,12 +52,11 @@ class PasswordResetPopup(Popup):
         self.content = layout
 
     def reset_password(self, instance):
-        firstname = self.firstname_input.text
         email = self.email_input.text
         new_password = self.new_password_input.text
         confirm_password = self.confirm_password_input.text
 
-        if not firstname or not email or not new_password or not confirm_password:
+        if not email or not new_password or not confirm_password:
             self.error_label.text = "Veuillez remplir tous les champs."
             return
 
@@ -70,10 +64,12 @@ class PasswordResetPopup(Popup):
             self.error_label.text = "Les mots de passe ne correspondent pas."
             return
 
-        data = {"firstname": firstname, "email": email, "new_password": new_password}
-        response = requests.post("http://127.0.0.1:8000/auth/reset_password/", data=data)
+        data = {"email": email, "new_password": new_password}
+        response_auth = requests.post("http://127.0.0.1:8000/auth/reset_password/", data=data)
+        response_reviews = requests.post("http://127.0.0.1:8000/reset_password/", data=data)
 
-        if response.status_code == 200:
+        if (response_auth.status_code == 200 or response_auth.status_code == 201) and \
+            (response_reviews.status_code == 200 or response_reviews.status_code == 201):
             self.error_label.text = "Mot de passe réinitialisé avec succès."
         else:
             self.error_label.text = "Erreur lors de la réinitialisation du mot de passe."

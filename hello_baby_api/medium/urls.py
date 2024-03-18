@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from reviews.views import UserViewSet, ImageViewSet, BabyViewSet, PregnancieViewSet, ForumViewSet, MessageViewSet, BiberonViewSet, UserModelDeleteAPIView, BabyModelDeleteAPIView
+from reviews.views import (
+    UserViewSet, ImageViewSet, BabyViewSet, PregnancieViewSet, ForumViewSet,
+    MessageViewSet, BiberonViewSet, UserModelDeleteAPIView, BabyModelDeleteAPIView,
+    PasswordResetAPIView
+)
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
@@ -21,6 +25,7 @@ urlpatterns = [
     path('auth/', include('auth.urls')),
     path('userdelete/<pk>', UserModelDeleteAPIView.as_view({'delete': 'destroy'}), name='user-delete'),
     path('babydelete/<pk>', BabyModelDeleteAPIView.as_view({'delete': 'destroy'}), name='baby-delete'),
+    path('reset_password/', PasswordResetAPIView.as_view(), name='password_reset'),
     path('', include(router.urls)),
 ]
 

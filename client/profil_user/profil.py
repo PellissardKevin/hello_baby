@@ -21,7 +21,7 @@ class Profil(Screen):
         super(Profil, self).__init__(**kwargs)
         self.setData = CalendarPopup(size_hint=(0.8, 0.6))
 
-    def delete(
+    def upgrade_profil(
         self,
         firstname,
         email,
@@ -30,7 +30,7 @@ class Profil(Screen):
         birthday=None,
         weight=None,
     ):
-        url = "http://127.0.0.1:8000/user/"
+        url = f"http://127.0.0.1:8000/user/{AppState.user_id}"
         data = {
             "firstname": firstname,
             "email": email,
@@ -39,7 +39,7 @@ class Profil(Screen):
             "birthday": birthday,
             "weight": weight,
         }
-        response_reg = requests.post("http://127.0.0.1:8000/auth/register/", data={
+        response_reg = requests.put(f"http://127.0.0.1:8000/auth/update_profile/{AppState.user_id}", data={
             "first_name": firstname,
             "username": email,
             "email": email,
@@ -53,17 +53,21 @@ class Profil(Screen):
         # Hash the password
         hashed_password = bcrypt.hashpw(bytes, salt)
 
+        # Register the user if a birthday is provided
+        if birthday:
+            data['birthday'] = datetime.strptime(birthday, '%d/%m/%Y').strftime('%Y-%m-%d')
+
         data['password'] = hashed_password
         data['birthday'] = datetime.strptime(birthday, '%d/%m/%Y').strftime('%Y-%m-%d')
         # send request to the endpoint
-        response = requests.post(url, data=data)
+        response = requests.put(url, data=data)
         if ((response.status_code == 201 or response.status_code == 200 ) and
                 (response_reg.status_code == 200 or response_reg.status_code == 201)):
-            print("Enregistrement réussie!")
+            print("Mise à jour réussie!")
         else:
-            print("Enregistrement échouée!")
+            print("Mise à jour échouée!")
 
-    def deletePregnancie(
+    def upgrade_pregnancy(
         self,
         email,
         pregnancie_date,
@@ -72,25 +76,24 @@ class Profil(Screen):
         data = {
             "pregnancy_date": '',
             "amenorhea_date": '',
-            "id_user": ''
+            "id_user": AppState.user_id
         }
         # get the data of user
-        user = requests.get("http://127.0.0.1:8000/user/?expand=email&email=%s" % email).json()
+        user = requests.get(f"http://127.0.0.1:8000/user/?email={email}").json()
 
         # save and format date
         datetime_obj = datetime.strptime(pregnancie_date, '%d/%m/%Y')
         amenorhea_format = datetime_obj + timedelta(weeks=3)
 
-        data['id_user'] = user[0]['id_user']
         data['pregnancy_date'] = datetime_obj.strftime('%Y-%m-%d')
         data['amenorhea_date'] = amenorhea_format.strftime('%Y-%m-%d')
 
         # send request to the endpoint
-        response = requests.post(url_preg, data=data, headers=AppState.header)
+        response = requests.put(url_preg, data=data, headers=AppState.header)
         if response.status_code == 201 or response.status_code == 200:
-            print("Enregistrement Grossesse réussie!")
+            print("Mise à jour Grossesse réussie!")
         else:
-            print("Enregistrement Grossesse échouée!")
+            print("Mise à jour Grossesse échouée!")
 
 
 class profilfile(App):

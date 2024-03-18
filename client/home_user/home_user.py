@@ -25,7 +25,7 @@ class Home_user(Screen):
 
     def on_enter(self):
         self.fetch_user_firstname()
-        self.update_pregnancy_countdown()
+        self.pregnancy_countdown()
 
     def fetch_user_firstname(self):
         try:
@@ -89,17 +89,40 @@ class Home_user(Screen):
         self.fetch_data() # Appeler fetch_data lorsque le bouton est pressé
         self.dropdown.open(widget)
 
-    def update_pregnancy_countdown(self, due_date=None):
-        if due_date:
-            pregnancy_countdown = due_date - datetime.now()
-            self.ids.pregnancy_info.text = f"Date d'accouchement : {due_date.strftime('%d-%m-%Y')}\n" \
-                                        f"Semaines de grossesse : {pregnancy_countdown.days // 7}\n" \
-                                        f"Jours restants : {pregnancy_countdown.days % 7}"
-        else:
-            self.ids.pregnancy_info.text = "Date d'accouchement : Inconnue\n" \
-                                        "Semaines de grossesse : Inconnue\n" \
-                                        "Jours restants : Inconnu"
-                                        
+    def pregnancy_countdown(self):
+        try:
+            # Récupérer les données de grossesse depuis l'API
+            response = requests.get(f"http://127.0.0.1:8000/pregnancie/?id_user={AppState.user_id}").json()
+            if response:
+                # Extraire la date de début de grossesse et la convertir en objet datetime
+                pregnancy_date = datetime.strptime(response[0]['pregnancy_date'], '%Y-%m-%d')
+
+                # Calculer la date d'accouchement en ajoutant 40 semaines à la date de début de grossesse
+                due_date = pregnancy_date + timedelta(weeks=40)
+
+                # Calculer le nombre de semaines restantes jusqu'à la date d'accouchement
+                weeks_remaining = (due_date - datetime.now()).days // 7
+
+                # Calculer le nombre de jours restants jusqu'à la date d'accouchement
+                days_remaining_until_due_date = (due_date - datetime.now()).days
+
+                if days_remaining_until_due_date <= 0:
+                    # Afficher le message de félicitations une fois que la date d'accouchement est atteinte
+                    self.ids.pregnancy_info.text = "Félicitations ! Votre bébé est né !"
+                else:
+                    # Afficher les informations de grossesse avec la date d'accouchement, les semaines de grossesse et les jours restants
+                    self.ids.pregnancy_info.text = f"Date d'accouchement : {due_date.strftime('%d-%m-%Y')}\n" \
+                                                    f"Semaines de grossesse : {weeks_remaining}\n" \
+                                                    f"Jours restants : {days_remaining_until_due_date}"
+            else:
+                # Afficher un message lorsque les données de grossesse ne sont pas disponibles
+                self.ids.pregnancy_info.text = "Date d'accouchement : Inconnue\n" \
+                                                "Semaines de grossesse : Inconnue\n" \
+                                                "Jours restants : Inconnu"
+        except Exception as e:
+            # Gérer l'exception appropriée selon vos besoins
+            print(f"Une erreur s'est produite : {e}")
+
 
 class userhome(App):
     def build(self):

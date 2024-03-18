@@ -65,7 +65,6 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         fields = ('username', 'first_name', 'last_name', 'email')
         extra_kwargs = {
             'first_name': {'required': True},
-            'last_name': {'required': True},
         }
 
     def validate_email(self, value):
@@ -94,3 +93,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    new_password = serializers.CharField(max_length=128)

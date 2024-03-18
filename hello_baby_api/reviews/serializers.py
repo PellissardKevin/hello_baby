@@ -116,3 +116,8 @@ class ImageSerializer(FlexFieldsModelSerializer):
         model = Image
         fields = ['pk', 'name', 'image']
 
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    new_password = serializers.CharField(min_length=4, max_length=128)
+    class Meta:
+        fields = ['email', 'new_password']

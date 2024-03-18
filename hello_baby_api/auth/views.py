@@ -1,4 +1,4 @@
-from .serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUserSerializer
+from .serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUserSerializer, PasswordResetSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
 from django.contrib.auth.models import User
@@ -28,6 +28,25 @@ class UpdateProfileView(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
 
+class PasswordResetAPIView(APIView):
+    def post(self, request, format=None):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            new_password = serializer.validated_data['new_password']
+
+            # Recherche de l'utilisateur par adresse e-mail
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"error": "Aucun utilisateur trouvé avec cette adresse e-mail."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Mise à jour du mot de passe de l'utilisateur
+            user.set_password(new_password)
+            user.save()
+            return Response({"message": "Mot de passe réinitialisé avec succès."}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)

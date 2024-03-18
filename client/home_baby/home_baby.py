@@ -8,6 +8,7 @@ from kivy.uix.label import Label
 from client.login.Login import AppState
 from client.profil_user.profil import Profil
 from kivy.uix.dropdown import DropDown
+from datetime import timedelta, datetime
 from kivy.uix.button import Button
 from kivy.network.urlrequest import UrlRequest
 import requests
@@ -31,6 +32,7 @@ class Home_baby(Screen):
         try:
             response = requests.get(f'http://127.0.0.1:8000/baby/?id_baby={AppState.baby_id}', headers=AppState.header)
             response_data = response.json()
+            self.birthday_baby(response_data[0]['birthday'], response_data[0]['firstname'])
             self.set_baby_firstname(response_data)
         except Exception as e:
             print(f"Error fetching baby firstname: {e}")
@@ -96,8 +98,30 @@ class Home_baby(Screen):
         self.fetch_babies()  # Appeler fetch_data lorsque le bouton est pressé
         self.dropdown.open(widget)
 
-    def update_pregnancy_countdown(self):
-        pass
+    def birthday_baby(self, due_date_str, firstname):
+        try:
+            # Convertir la chaîne de date en objet datetime
+            due_date = datetime.strptime(due_date_str, '%Y-%m-%d')
+
+            # Calcul de l'âge de l'enfant en semaines
+            age_in_weeks = (datetime.now() - due_date).days // 7
+
+            # Calcul de l'âge de l'enfant en mois
+            age_in_months = age_in_weeks // 4  # En supposant qu'un mois a 4 semaines
+
+            # Calcul des jours restants jusqu'à l'anniversaire
+            next_birthday = due_date.replace(year=datetime.now().year)
+
+            if next_birthday < datetime.now():
+                next_birthday = next_birthday.replace(year=datetime.now().year + 1)
+            days_until_next_birthday = (next_birthday - datetime.now()).days
+
+            self.ids.baby_info.text = f"{firstname} est agée de {age_in_weeks} semaines\n" \
+                                        f"ou {age_in_months} mois\n" \
+                                        f"Son prochain anniversaire est dans {days_until_next_birthday} jours"
+        except Exception as e:
+            # Gérer l'exception appropriée selon vos besoins
+            print(f"Une erreur s'est produite : {e}")
 
 
 class babyhome(App):

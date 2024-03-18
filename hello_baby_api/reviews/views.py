@@ -1,9 +1,11 @@
-from .serializers import UserSerializer, ImageSerializer, BabySerializer, PregnancieSerializer, ForumSerializer, MessageSerializer, BiberonSerializer
+from .serializers import UserSerializer, ImageSerializer, BabySerializer, PregnancieSerializer, ForumSerializer, MessageSerializer, BiberonSerializer, PasswordResetSerializer
 from .models import user, Image, baby, pregnancie, forum, message, biberon
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework import generics
+from rest_framework.views import APIView
 from rest_flex_fields.views import FlexFieldsMixin, FlexFieldsModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -85,3 +87,23 @@ class BabyModelDeleteAPIView(FlexFieldsMixin, ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class PasswordResetAPIView(FlexFieldsMixin, APIView):
+    def post(self, request, format=None):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            new_password = serializer.validated_data['new_password']
+
+            try:
+                user_instance = user.objects.get(email=email)
+            except user.DoesNotExist:
+                return Response({"error": "Aucun utilisateur trouvé avec cette adresse e-mail."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Réinitialisation du mot de passe
+            user_instance.password = make_password(new_password)
+            user_instance.save()
+
+            return Response({"message": "Mot de passe réinitialisé avec succès."}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
