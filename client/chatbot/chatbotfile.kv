@@ -51,7 +51,7 @@
         BoxLayout:
             orientation: 'vertical'
             spacing: 10
-            padding: ('50dp', '550dp')
+            padding: ('50dp', '50dp')
             pos_hint: {'top': 1.0}
 
             Label:
@@ -67,24 +67,34 @@
                         texture: Gradient.vertical(get_color_from_hex("F2F200"), get_color_from_hex("FFFF80"))
                         radius: [15, 15, 15, 15]
 
+        ScrollView:
+            id: scroll_view
+            do_scroll_y: True
+            size_hint_y: None
+            height: 500
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 10
+                padding: 20
+
+                Label:
+                    id: chatbot_response
+                    text: ""
+                    color: 0, 0, 0, 1
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    size: self.texture_size
+                    padding: ('10dp', '10dp')
+                    halign: 'center'
+                    valign: 'middle'
         BoxLayout:
-            orientation:'vertical'
+            orientation: 'vertical'
             spacing: '5dp'
             padding: 20
             size_hint_y: None
             height: 200
-
-            Label:
-                id: chatbot_response
-                text: ""
-                color: 0, 0, 0, 1
-                size_hint_y: None
-                height: self.texture_size[1]
-                text_size: self.width, 700
-                size: self.texture_size
-                padding: ('10dp', '10dp')
-                halign: 'center'
-                valign: 'middle'
 
             TextInput:
                 id: user_input

@@ -16,6 +16,7 @@ from openai import OpenAI
 from hello_baby_api import config
 
 
+
 Window.size = (430, 932)
 
 
@@ -48,9 +49,16 @@ class Chatbot(Screen):
         self.ids.chatbot_response.text = str(completion.choices[0].message
                                              .content)
 
+        self.update_scroll_view()
+
     def clear_input(self):
         # Accéder à l'objet TextInput par son ID et effacer son contenu
         self.ids.user_input.text = ""
+
+    def update_scroll_view(self):
+        # Mettez à jour la position du défilement pour afficher le bas
+        self.ids.scroll_view.scroll_y = 0
+
 
 class chatbotfile(App):
     def build(self):
