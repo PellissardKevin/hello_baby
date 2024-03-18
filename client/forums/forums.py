@@ -75,7 +75,7 @@ class Forums(Screen):
 
                 for forum_item in forums_data:
                     title = forum_item['title']
-                    AppState.id_forum = forum_id = forum_item['id_forum']
+                    AppState.id_forum = forum_id = forum_item['id_forums']
 
                     # Create a new GridLayout for each discussion
                     forum_layout = GridLayout(cols=1, size_hint_y=None)
@@ -212,6 +212,24 @@ class Forums(Screen):
         response = requests.delete(url, headers=AppState.header)
         if response.status_code == 204:
             print("Discussion supprimée avec succès!")
+
+            # Supprimer les messages associés à ce forum
+            messages_url = f'http://127.0.0.1:8000/message/?id_forum={forum_id}'
+            messages_response = requests.get(messages_url, headers=AppState.header)
+
+            if messages_response.status_code == 200:
+                messages_data = messages_response.json()
+                for message in messages_data:
+                    # Supprimer chaque message associé
+                    message_id = message['id']
+                    message_delete_url = f'http://127.0.0.1:8000/message/?id_forum={forum_id}'
+                    message_delete_response = requests.delete(message_delete_url, headers=AppState.header)
+
+                    if message_delete_response.status_code == 204:
+                        print(f"Message {message_id} supprimé avec succès!")
+                    else:
+                        print(f"Erreur lors de la suppression du message {message_id}: {message_delete_response.text}")
+
             # Supprimer la discussion des données locales
             del self.forums_data[title]
             # Réorganiser l'affichage pour refléter la suppression de la discussion

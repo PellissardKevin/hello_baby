@@ -101,7 +101,7 @@ class Home_user(Screen):
                 due_date = pregnancy_date + timedelta(weeks=40)
 
                 # Calculer le nombre de semaines restantes jusqu'à la date d'accouchement
-                weeks_remaining = (due_date - datetime.now()).days // 7
+                weeks_remaining = (datetime.now() - pregnancy_date).days // 7
 
                 # Calculer le nombre de jours restants jusqu'à la date d'accouchement
                 days_remaining_until_due_date = (due_date - datetime.now()).days
