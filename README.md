@@ -52,7 +52,7 @@ If you want to install all the dependencies you need :
 
 ### VIDEO
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uAaRszIb4gU" frameborder="0" allowfullscreen></iframe>
+https://www.youtube.com/embed/uAaRszIb4gU
 
 ### BLOG
 
@@ -61,9 +61,9 @@ https://medium.com/@6890/hello-baby-8a1f9cdd0313
 
 ### AUTHORS
 
-Kevin Pellissard
-	Linkedin : https://www.linkedin.com/in/kevin-pellissard-a72924243/
-	Github : https://github.com/PellissardKevin/
-Nadège Tettelin
-	Linkedin : https://www.linkedin.com/in/nadege-tettelin/
-	Github : https://github.com/Nadely
+Kevin Pellissard :
+	<p>Linkedin : https://www.linkedin.com/in/kevin-pellissard-a72924243/
+	Github : https://github.com/PellissardKevin/</p>
+Nadège Tettelin :
+	<p>Linkedin : https://www.linkedin.com/in/nadege-tettelin/
+	Github : https://github.com/Nadely</p>
