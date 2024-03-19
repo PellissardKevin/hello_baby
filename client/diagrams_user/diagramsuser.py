@@ -44,16 +44,30 @@ class Diagrams_user(Screen):
     def on_enter(self):
         self.update_graph()
 
+
+    def get_user_id_from_json(self):
+        # Charger le fichier JSON et obtenir l'ID de l'utilisateur s'il existe
+        try:
+            with open('weight_history.json', 'r') as json_file:
+                weight_history = json.load(json_file)
+                if weight_history:
+                    return weight_history[0].get('user_id')
+        except (FileNotFoundError, json.JSONDecodeError, IndexError):
+            pass
+        return None
+
+
     def update_graph(self, dt=None):
         x_values = []
         y_values = []
         try:
             with open('weight_history.json', 'r') as json_file:
                 weight_history = json.load(json_file)
-                for entry in weight_history:
-                    date_weight = datetime.strptime(entry['date'], '%Y-%m-%d')
-                    x_values.append(date_weight)
-                    y_values.append(float(entry['weight']))
+                if AppState.user_id == self.get_user_id_from_json():
+                    for entry in weight_history:
+                        date_weight = datetime.strptime(entry['date'], '%Y-%m-%d')
+                        x_values.append(date_weight)
+                        y_values.append(float(entry['weight']))
         except json.JSONDecodeError as e:
             print("Erreur lors de la lecture du fichier JSON :", e)
         except FileNotFoundError:
