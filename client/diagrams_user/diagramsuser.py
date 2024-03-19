@@ -63,11 +63,11 @@ class Diagrams_user(Screen):
         try:
             with open('weight_history.json', 'r') as json_file:
                 weight_history = json.load(json_file)
-                if AppState.user_id == self.get_user_id_from_json():
-                    for entry in weight_history:
-                        date_weight = datetime.strptime(entry['date'], '%Y-%m-%d')
-                        x_values.append(date_weight)
-                        y_values.append(float(entry['weight']))
+                user_weight_history = [entry for entry in weight_history if entry.get('user_id') == AppState.user_id]
+                for entry in user_weight_history:
+                    date_weight = datetime.strptime(entry['date'], '%Y-%m-%d')
+                    x_values.append(date_weight)
+                    y_values.append(float(entry['weight']))
         except json.JSONDecodeError as e:
             print("Erreur lors de la lecture du fichier JSON :", e)
         except FileNotFoundError:
