@@ -48,7 +48,7 @@ If you want to install all the dependencies you need :
 
 ### EXAMPLES
 
-![Login](https://i.ibb.co/cTnSkzQ/iphone-hero.png) ![User Home](https://i.ibb.co/WsW7Y6h/Sans-titre-1.png) ![Register Baby](https://i.ibb.co/W67QP3D/iphone-feature-03.png)
+<img src="https://i.ibb.co/cTnSkzQ/iphone-hero.png" width="200">  <img src="https://i.ibb.co/WsW7Y6h/Sans-titre-1.png" width="200">  <img src="https://i.ibb.co/W67QP3D/iphone-feature-03.png" width="200">
 
 ### VIDEO
 
