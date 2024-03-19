@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 
-
 class UserSerializer(FlexFieldsModelSerializer):
     password = serializers.CharField(
         min_length=4, write_only=True, required=True, style={"input_type": "password"}
@@ -121,3 +120,4 @@ class PasswordResetSerializer(serializers.Serializer):
     new_password = serializers.CharField(min_length=4, max_length=128)
     class Meta:
         fields = ['email', 'new_password']
+

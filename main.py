@@ -17,6 +17,7 @@ from client.register_baby.register_baby import Baby
 from client.home_baby.home_baby import Home_baby
 from client.forums.forums import Forums
 from client.diagrams.diagrams import Diagrams
+from client.diagrams_user.diagramsuser import Diagrams_user
 from client.professionnal.professionnal import Professionnal
 from client.appointment.appointement import Appointement
 
@@ -28,6 +29,7 @@ Builder.load_file("client/chatbot/chatbotfile.kv")
 Builder.load_file("client/appointment/appointementfile.kv")
 Builder.load_file("client/contact/contactfile.kv")
 Builder.load_file("client/diagrams/diagramsfile.kv")
+Builder.load_file("client/diagrams_user/diagramsuserfile.kv")
 Builder.load_file("client/forums/forumsfile.kv")
 Builder.load_file("client/home_baby/babyhome.kv")
 Builder.load_file("client/register_baby/babyregisterfile.kv")
@@ -49,9 +51,11 @@ class Main(App):
         sm.add_widget(Baby(name="babyregister"))
         sm.add_widget(Forums(name="forums"))
         sm.add_widget(Diagrams(name="diagrams"))
+        sm.add_widget(Diagrams_user(name="diagrams_user"))
         sm.add_widget(Appointement(name="appointment"))
         sm.add_widget(Professionnal(name="professionnal"))
         sm.add_widget(Contact(name="contact"))
+
 
 
         return sm

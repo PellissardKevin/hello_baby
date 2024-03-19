@@ -88,7 +88,7 @@
                 font_size: 14
 
             Button:
-                text:'Ajouter un biberon'
+                text:'Modifier votre poids'
                 size_hint_y: None
                 height: dp(50)
                 margin: 20
@@ -99,7 +99,7 @@
                         size: self.size
                         texture: Gradient.vertical(get_color_from_hex("0080C0"), get_color_from_hex("28B9FF"))
                         radius: [15, 15, 15, 15]
-                on_press: root.enter_data_bib()
+                on_press: root.enter_data_weight()
 
         BoxLayout:
             orientation: 'vertical'

@@ -46,6 +46,26 @@ class Register(Screen):
             "password": password
         })
 
+        # Stocker le poids dans un fichier JSON avec la date
+        if weight:
+            # Récupérer la date actuelle
+            current_date = datetime.now().strftime('%Y-%m-%d')
+            weight_data = {'date': current_date, 'weight': weight}
+
+            # Charger les données actuelles du fichier JSON s'il existe
+            try:
+                with open('weight_history.json', 'r') as json_file:
+                    weight_history = json.load(json_file)
+            except FileNotFoundError:
+                weight_history = []
+
+            # Ajouter le poids actuel aux données d'historique
+            weight_history.append(weight_data)
+
+            # Écrire les données mises à jour dans le fichier JSON
+            with open('weight_history.json', 'w') as json_file:
+                json.dump(weight_history, json_file)
+
         # Register the user if a birthday is provided
         if birthday:
             data['birthday'] = datetime.strptime(birthday, '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -95,12 +115,6 @@ class Register(Screen):
             print("Enregistrement Grossesse réussie!")
         else:
             print("Enregistrement Grossesse échouée!")
-
-        """# Calcul de la date d'accouchement
-        pregnancy_start_date = datetime.strptime(pregnancie_date, '%d/%m/%Y')
-        due_date = pregnancy_start_date + timedelta(weeks=40)
-
-        Home_user.update_pregnancy_countdown(due_date)"""
 
     def clear_input(self):
         # Accéder à l'objet TextInput par son ID et effacer son contenu

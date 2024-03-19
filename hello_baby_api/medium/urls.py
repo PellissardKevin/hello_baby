@@ -3,7 +3,7 @@ from django.urls import path, include
 from reviews.views import (
     UserViewSet, ImageViewSet, BabyViewSet, PregnancieViewSet, ForumViewSet,
     MessageViewSet, BiberonViewSet, UserModelDeleteAPIView, BabyModelDeleteAPIView,
-    PasswordResetAPIView
+    PasswordResetAPIView,
 )
 from rest_framework.routers import DefaultRouter
 from django.conf import settings

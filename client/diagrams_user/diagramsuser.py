@@ -12,7 +12,7 @@ from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import plotly.graph_objects as go
 from kivy.graphics.texture import Texture
 from kivy.core.image import Image as CoreImage
-
+import json
 from kivy.uix.label import Label
 import io
 from PIL import Image as PILImage
@@ -45,21 +45,31 @@ class Diagrams_user(Screen):
         self.update_graph()
 
     def update_graph(self, dt=None):
+        x_values = []
+        y_values = []
         try:
-            response = requests.get(f'http://127.0.0.1:8000/user/?id_user={AppState.user_id}', headers=AppState.header)
-            if response.status_code == 200 or response.status_code == 201:
-                data = response.json()
-                x_values = []
-                y_values = []
-                for entry in data:
-                    date_weight = datetime.strptime(entry['date_weight'], '%Y-%m-%dT%H:%M:%SZ')
+            with open('weight_history.json', 'r') as json_file:
+                weight_history = json.load(json_file)
+                for entry in weight_history:
+                    date_weight = datetime.strptime(entry['date'], '%Y-%m-%d')
                     x_values.append(date_weight)
                     y_values.append(float(entry['weight']))
-
-                self.plotly_widget.update_plot(x_values, y_values)
-
+        except json.JSONDecodeError as e:
+            print("Erreur lors de la lecture du fichier JSON :", e)
+        except FileNotFoundError:
+            print("Le fichier JSON n'existe pas.")
         except Exception as e:
-            print("Error fetching data:", e)
+            print("Une erreur s'est produite lors de la lecture du fichier JSON :", e)
+
+        if not x_values or not y_values:
+            print("Aucune donnée de poids trouvée dans le fichier JSON.")
+            x_values = [datetime.now()]
+            y_values = [0]
+        else:
+            print("Données de poids trouvées :", x_values, y_values)
+
+        self.plotly_widget.update_plot(x_values, y_values)
+
 
     def get_data_from_response(self, data):
         x_values = []
@@ -70,7 +80,7 @@ class Diagrams_user(Screen):
             y_values.append(float(entry['weight']))
         return x_values, y_values
 
-    def enter_data_bib(self):
+    def enter_data_weight(self):
         content = BoxLayout(orientation='vertical')
         weight_input = TextInput(hint_text='Poids en kg', multiline=True)
         add_button = Button(text='Ajouter', size_hint_y=None, height=dp(50))
@@ -82,30 +92,50 @@ class Diagrams_user(Screen):
         self.popup.open()
 
     def add_weight(self, weight):
+        weight = float(weight)
         try:
-            weight = float(weight)
             if weight <= 0:
-                print("Veuillez entrer un poids positive.")
+                print("Le poids doit être un nombre positif.")
                 return
 
-            data = {
-                "id_user": AppState.user_id,
-                "weight": weight,
-                "date_weight": datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
-            }
+            # Charger les données de poids existantes s'il y en a
+            try:
+                with open('weight_history.json', 'r') as json_file:
+                    weight_history = json.load(json_file)
+            except FileNotFoundError:
+                print("Le fichier JSON n'existe pas.")
+                weight_history = []
 
-            response = requests.post('http://127.0.0.1:8000/user/', headers=AppState.header, data=data)
-            if response.status_code == 201 or response.status_code == 200:
-                print("Poids ajouté avec succès!")
-                self.update_graph()
+            # Vérifier si l'utilisateur a déjà un poids enregistré
+            user_weight_entry = next((entry for entry in weight_history if entry.get('user_id') == AppState.user_id), None)
+
+            if user_weight_entry:
+                # Mettre à jour le poids existant
+                user_weight_entry['weight'] = weight
+                user_weight_entry['date'] = datetime.now().strftime('%Y-%m-%d')
             else:
-                print("Erreur lors de l'ajout du poids:", response.status_code)
+                # Ajouter un nouveau poids pour l'utilisateur
+                weight_data = {'user_id': AppState.user_id, 'date': datetime.now().strftime('%Y-%m-%d'), 'weight': weight}
+                weight_history.append(weight_data)
+
+            with open('weight_history.json', 'w') as json_file:
+                json.dump(weight_history, json_file)
+
+            # Envoyer le poids à l'API si nécessaire
+            if not user_weight_entry:
+                data = {"weight": weight}
+                response = requests.put(f'http://127.0.0.1:8000/user/{AppState.user_id}/', headers=AppState.header, data=data)
+                if response.status_code == 201 or response.status_code == 200:
+                    print("Poids ajouté avec succès à l'API!")
+                    self.update_graph()
+                else:
+                    print("Erreur lors de l'ajout du poids à l'API:", response.status_code)
+
             if self.popup:
                 self.popup.dismiss()
                 self.popup = None
         except ValueError:
             print("Veuillez entrer un poids valide.")
-
 
 class PlotlyWidget(BoxLayout):
     def __init__(self, **kwargs):

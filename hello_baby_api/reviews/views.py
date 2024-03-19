@@ -1,4 +1,7 @@
-from .serializers import UserSerializer, ImageSerializer, BabySerializer, PregnancieSerializer, ForumSerializer, MessageSerializer, BiberonSerializer, PasswordResetSerializer
+from .serializers import (
+    UserSerializer, ImageSerializer, BabySerializer, PregnancieSerializer,
+    ForumSerializer, MessageSerializer, BiberonSerializer, PasswordResetSerializer
+    )
 from .models import user, Image, baby, pregnancie, forum, message, biberon
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework import generics
@@ -16,6 +19,20 @@ class UserViewSet(FlexFieldsMixin, ModelViewSet):
         queryset = user.objects.all()
         return queryset
 
+    def update(self, request, *args, **kwargs):
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+
+            # Check if only weight field is being updated
+            if 'weight' in request.data and len(request.data.keys()) == 1:
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"error": "You can only update the 'weight' field."}, status=status.HTTP_400_BAD_REQUEST)
 
 class ImageViewSet(FlexFieldsModelViewSet):
     serializer_class = ImageSerializer
