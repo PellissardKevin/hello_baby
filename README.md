@@ -1,19 +1,32 @@
 # <p style="text-align: center;"><span style="color:blue">*Hello Baby !*</span></p>
 
 ![Logo](https://i.ibb.co/jfgNjsm/hello-baby-logo.png)
+<p style="text-align: center;"><span>“From Bump to Baby and Beyond: One App for Every Step.”</span></p>
 
 - [DESCRIPTION](#description)
+- [INSTALLATION](#installation)
 - [THE ENVIRONMENT](#the-environment)
-- [COMPILATION CMD](#compilation-cmd)
 - [EXAMPLES](#examples)
+- [VIDEO](#video)
+- [BLOG](#blog)
 - [AUTHORS](#authors)
 
+<p style="text-align: center;"><span>“Discover a new experience in pregnancy monitoring! Our application accompanies you every step of the way on this wonderful journey. Get personalised advice thanks to AI, follow your baby’s development week by week, and stay connected with other mums-to-be by exchanging ideas. Enjoy a worry-free pregnancy, thanks to our dedicated application.”</span></p>
 
 ### DESCRIPTION
 
 <span style="color:black">Pregnancy is a stressful, confusing time, with lots of questions.
 Parents-to-be need reassurance to ensure that their pregnancy goes as smoothly as possible, and that their baby develops properly.
 To do this, they can follow the progress of the pregnancy, find answers to certain questions. And then follow the progress of their child(ren).</span>
+
+Landing page of the Project : https://nadely.github.io/
+
+
+### INSTALLATION
+
+For cloning our repository :
+
+	git clone https://github.com/PellissardKevin/hello_baby.git
 
 ### THE ENVIRONMENT
 <span style="color:black">We use the Python language with the Kivy and Django frameworks.
@@ -35,8 +48,22 @@ If you want to install all the dependencies you need :
 
 ### EXAMPLES
 
-![User Home](https://i.ibb.co/C6pBDZN/Capture-userhome.png)
+![Login](https://i.ibb.co/cTnSkzQ/iphone-hero.png) ![User Home](https://i.ibb.co/WsW7Y6h/Sans-titre-1.png) ![Register Baby](https://i.ibb.co/W67QP3D/iphone-feature-03.png)
+
+### VIDEO
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uAaRszIb4gU" frameborder="0" allowfullscreen></iframe>
+
+### BLOG
+
+https://medium.com/@6890/hello-baby-8a1f9cdd0313
+
 
 ### AUTHORS
 
-Kevin Pellissard, Nadège Tettelin.
+Kevin Pellissard
+	Linkedin : https://www.linkedin.com/in/kevin-pellissard-a72924243/
+	Github : https://github.com/PellissardKevin/
+Nadège Tettelin
+	Linkedin : https://www.linkedin.com/in/nadege-tettelin/
+	Github : https://github.com/Nadely
