@@ -119,7 +119,7 @@ class Home_baby(Screen):
                 next_birthday = next_birthday.replace(year=datetime.now().year + 1)
             days_until_next_birthday = (next_birthday - datetime.now()).days
 
-            self.ids.baby_info.text = f"{firstname} est agée de {age_in_weeks} semaines\n" \
+            self.ids.baby_info.text = f"{firstname} est agé(e) de {age_in_weeks} semaines\n" \
                                         f"ou {age_in_months} mois\n" \
                                         f"Son prochain anniversaire est dans {days_until_next_birthday} jours"
         except Exception as e:
