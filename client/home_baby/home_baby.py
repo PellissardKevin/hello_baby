@@ -93,6 +93,9 @@ class Home_baby(Screen):
             self.fetch_baby_firstname()
             self.manager.current = "babyhome"
 
+        # Fermer le menu déroulant
+        self.dropdown.dismiss()
+
     def open_dropdown(self, widget):
         # Ouvre le menu déroulant lorsque le bouton est relâché
         self.fetch_babies()  # Appeler fetch_data lorsque le bouton est pressé
